@@ -1,9 +1,0 @@
-# 机器人消息定义
-string label
-uint32 faction
-uint32 id
-geometry_msgs/PoseStamped pose
-uint32 hp
-uint32 level
-bool attack
-bool missing

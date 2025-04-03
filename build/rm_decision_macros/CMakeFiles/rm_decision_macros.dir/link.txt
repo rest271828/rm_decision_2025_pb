@@ -1,1 +1,0 @@
-/usr/bin/c++ -fPIC -shared -Wl,-soname,librm_decision_macros.so -o librm_decision_macros.so CMakeFiles/rm_decision_macros.dir/src/decision_node_regist_macro.cpp.o 

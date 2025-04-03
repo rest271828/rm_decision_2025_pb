@@ -1,3 +1,0 @@
-source;share/rm_decision_macros/environment/ament_prefix_path.sh
-source;share/rm_decision_macros/environment/library_path.sh
-source;share/rm_decision_macros/environment/path.sh
