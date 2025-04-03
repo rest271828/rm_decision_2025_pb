@@ -467,7 +467,7 @@ terminal_listener_BINARY_DIR:STATIC=/home/ethereal/rm_2025/rm_decision_2025_pb/b
 terminal_listener_IS_TOP_LEVEL:STATIC=ON
 
 //Value Computed by CMake
-terminal_listener_SOURCE_DIR:STATIC=/home/ethereal/rm_2025/rm_decision_2025_pb/src/Other Tools/terminal_listener
+terminal_listener_SOURCE_DIR:STATIC=/home/ethereal/rm_2025/rm_decision_2025_pb/src/Others/terminal_listener
 
 //The directory containing a CMake configuration file for tracetools.
 tracetools_DIR:PATH=/opt/ros/humble/share/tracetools/cmake
@@ -564,7 +564,7 @@ CMAKE_HAVE_LIBC_PTHREAD:INTERNAL=1
 CMAKE_HAVE_PTHREAD_H:INTERNAL=1
 //Source directory with the top level CMakeLists.txt file for this
 // project
-CMAKE_HOME_DIRECTORY:INTERNAL=/home/ethereal/rm_2025/rm_decision_2025_pb/src/Other Tools/terminal_listener
+CMAKE_HOME_DIRECTORY:INTERNAL=/home/ethereal/rm_2025/rm_decision_2025_pb/src/Others/terminal_listener
 //Install .so files without execute permission.
 CMAKE_INSTALL_SO_NO_EXE:INTERNAL=1
 //ADVANCED property for variable: CMAKE_LINKER

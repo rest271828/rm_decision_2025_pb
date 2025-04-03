@@ -57,7 +57,7 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = "/home/ethereal/rm_2025/rm_decision_2025_pb/src/State Level/sensing_base"
+CMAKE_SOURCE_DIR = /home/ethereal/rm_2025/rm_decision_2025_pb/src/State/sensing_base
 
 # The top-level build directory on which CMake was run.
 CMAKE_BINARY_DIR = /home/ethereal/rm_2025/rm_decision_2025_pb/build/sensing_base

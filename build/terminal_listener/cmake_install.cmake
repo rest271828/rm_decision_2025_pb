@@ -1,4 +1,4 @@
-# Install script for directory: /home/ethereal/rm_2025/rm_decision_2025_pb/src/Other Tools/terminal_listener
+# Install script for directory: /home/ethereal/rm_2025/rm_decision_2025_pb/src/Others/terminal_listener
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -118,7 +118,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/terminal_listener" TYPE FILE FILES "/home/ethereal/rm_2025/rm_decision_2025_pb/src/Other Tools/terminal_listener/package.xml")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/terminal_listener" TYPE FILE FILES "/home/ethereal/rm_2025/rm_decision_2025_pb/src/Others/terminal_listener/package.xml")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT)

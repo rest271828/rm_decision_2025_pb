@@ -1,6 +1,6 @@
 {
   "package_name": "navigator_interfaces",
   "non_idl_tuples": [
-    "/home/ethereal/rm_2025/rm_decision_2025_pb/src/Action Level/navigator_interfaces:msg/Navigate.msg"
+    "/home/ethereal/rm_2025/rm_decision_2025_pb/src/Action/navigator_interfaces:msg/Navigate.msg"
   ]
 }

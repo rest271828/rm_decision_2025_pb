@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = -Drm_decision_macros_EXPORTS
 
-CXX_INCLUDES = -I"/home/ethereal/rm_2025/rm_decision_2025_pb/src/Other Tools/rm_decision_macros/include"
+CXX_INCLUDES = -I/home/ethereal/rm_2025/rm_decision_2025_pb/src/Others/rm_decision_macros/include
 
 CXX_FLAGS = -fPIC   -Wall -Werror -std=gnu++17
 

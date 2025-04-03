@@ -1,4 +1,4 @@
-# Install script for directory: /home/ethereal/rm_2025/rm_decision_2025_pb/src/State Level/information_widgets
+# Install script for directory: /home/ethereal/rm_2025/rm_decision_2025_pb/src/State/information_widgets
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -43,7 +43,7 @@ if(NOT DEFINED CMAKE_OBJDUMP)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include" TYPE DIRECTORY FILES "/home/ethereal/rm_2025/rm_decision_2025_pb/src/State Level/information_widgets/include/")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include" TYPE DIRECTORY FILES "/home/ethereal/rm_2025/rm_decision_2025_pb/src/State/information_widgets/include/")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
@@ -66,7 +66,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libinformation_widgets.so")
     file(RPATH_CHANGE
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libinformation_widgets.so"
-         OLD_RPATH "/home/ethereal/rm_2025/rm_decision_2025_pb/install/rm_decision_interfaces/lib:/home/ethereal/rm_2025/rm_decision_2025_pb/install/auto_aim_interfaces/lib:/home/ethereal/rm_2025/rm_decision_2025_pb/install/iw_interfaces/lib:/opt/ros/humble/lib:"
+         OLD_RPATH "/home/ethereal/rm_2025/rm_decision_2025_pb/install/iw_interfaces/lib:/opt/ros/humble/lib:"
          NEW_RPATH "")
     if(CMAKE_INSTALL_DO_STRIP)
       execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libinformation_widgets.so")
@@ -145,7 +145,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/information_widgets" TYPE FILE FILES "/home/ethereal/rm_2025/rm_decision_2025_pb/src/State Level/information_widgets/package.xml")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/information_widgets" TYPE FILE FILES "/home/ethereal/rm_2025/rm_decision_2025_pb/src/State/information_widgets/package.xml")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT)

@@ -1,4 +1,4 @@
-# Install script for directory: /home/ethereal/rm_2025/rm_decision_2025_pb/src/Action Level/navigator_interfaces
+# Install script for directory: /home/ethereal/rm_2025/rm_decision_2025_pb/src/Action/navigator_interfaces
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -360,7 +360,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/navigator_interfaces/msg" TYPE FILE FILES "/home/ethereal/rm_2025/rm_decision_2025_pb/src/Action Level/navigator_interfaces/msg/Navigate.msg")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/navigator_interfaces/msg" TYPE FILE FILES "/home/ethereal/rm_2025/rm_decision_2025_pb/src/Action/navigator_interfaces/msg/Navigate.msg")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
@@ -615,7 +615,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/navigator_interfaces" TYPE FILE FILES "/home/ethereal/rm_2025/rm_decision_2025_pb/src/Action Level/navigator_interfaces/package.xml")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/navigator_interfaces" TYPE FILE FILES "/home/ethereal/rm_2025/rm_decision_2025_pb/src/Action/navigator_interfaces/package.xml")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)

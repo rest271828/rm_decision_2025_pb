@@ -1,2 +1,0 @@
-float64 needchangeyaw
-bool is_can_hit

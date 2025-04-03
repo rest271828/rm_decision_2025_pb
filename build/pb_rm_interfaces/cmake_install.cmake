@@ -1,4 +1,4 @@
-# Install script for directory: /home/ethereal/rm_2025/rm_decision_2025_pb/src/Other Tools/pb_rm_interfaces
+# Install script for directory: /home/ethereal/rm_2025/rm_decision_2025_pb/src/Others/pb_rm_interfaces
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -400,47 +400,47 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/pb_rm_interfaces/referee" TYPE FILE FILES "/home/ethereal/rm_2025/rm_decision_2025_pb/src/Other Tools/pb_rm_interfaces/msg/referee/Buff.msg")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/pb_rm_interfaces/referee" TYPE FILE FILES "/home/ethereal/rm_2025/rm_decision_2025_pb/src/Others/pb_rm_interfaces/msg/referee/Buff.msg")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/pb_rm_interfaces/referee" TYPE FILE FILES "/home/ethereal/rm_2025/rm_decision_2025_pb/src/Other Tools/pb_rm_interfaces/msg/referee/EventData.msg")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/pb_rm_interfaces/referee" TYPE FILE FILES "/home/ethereal/rm_2025/rm_decision_2025_pb/src/Others/pb_rm_interfaces/msg/referee/EventData.msg")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/pb_rm_interfaces/referee" TYPE FILE FILES "/home/ethereal/rm_2025/rm_decision_2025_pb/src/Other Tools/pb_rm_interfaces/msg/referee/GameRobotHP.msg")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/pb_rm_interfaces/referee" TYPE FILE FILES "/home/ethereal/rm_2025/rm_decision_2025_pb/src/Others/pb_rm_interfaces/msg/referee/GameRobotHP.msg")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/pb_rm_interfaces/referee" TYPE FILE FILES "/home/ethereal/rm_2025/rm_decision_2025_pb/src/Other Tools/pb_rm_interfaces/msg/referee/GameStatus.msg")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/pb_rm_interfaces/referee" TYPE FILE FILES "/home/ethereal/rm_2025/rm_decision_2025_pb/src/Others/pb_rm_interfaces/msg/referee/GameStatus.msg")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/pb_rm_interfaces/referee" TYPE FILE FILES "/home/ethereal/rm_2025/rm_decision_2025_pb/src/Other Tools/pb_rm_interfaces/msg/referee/GroundRobotPosition.msg")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/pb_rm_interfaces/referee" TYPE FILE FILES "/home/ethereal/rm_2025/rm_decision_2025_pb/src/Others/pb_rm_interfaces/msg/referee/GroundRobotPosition.msg")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/pb_rm_interfaces/referee" TYPE FILE FILES "/home/ethereal/rm_2025/rm_decision_2025_pb/src/Other Tools/pb_rm_interfaces/msg/referee/RfidStatus.msg")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/pb_rm_interfaces/referee" TYPE FILE FILES "/home/ethereal/rm_2025/rm_decision_2025_pb/src/Others/pb_rm_interfaces/msg/referee/RfidStatus.msg")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/pb_rm_interfaces/referee" TYPE FILE FILES "/home/ethereal/rm_2025/rm_decision_2025_pb/src/Other Tools/pb_rm_interfaces/msg/referee/RobotStatus.msg")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/pb_rm_interfaces/referee" TYPE FILE FILES "/home/ethereal/rm_2025/rm_decision_2025_pb/src/Others/pb_rm_interfaces/msg/referee/RobotStatus.msg")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/pb_rm_interfaces/msg" TYPE FILE FILES "/home/ethereal/rm_2025/rm_decision_2025_pb/src/Other Tools/pb_rm_interfaces/msg/Gimbal.msg")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/pb_rm_interfaces/msg" TYPE FILE FILES "/home/ethereal/rm_2025/rm_decision_2025_pb/src/Others/pb_rm_interfaces/msg/Gimbal.msg")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/pb_rm_interfaces/msg" TYPE FILE FILES "/home/ethereal/rm_2025/rm_decision_2025_pb/src/Other Tools/pb_rm_interfaces/msg/GimbalCmd.msg")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/pb_rm_interfaces/msg" TYPE FILE FILES "/home/ethereal/rm_2025/rm_decision_2025_pb/src/Others/pb_rm_interfaces/msg/GimbalCmd.msg")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/pb_rm_interfaces/msg" TYPE FILE FILES "/home/ethereal/rm_2025/rm_decision_2025_pb/src/Other Tools/pb_rm_interfaces/msg/Models.msg")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/pb_rm_interfaces/msg" TYPE FILE FILES "/home/ethereal/rm_2025/rm_decision_2025_pb/src/Others/pb_rm_interfaces/msg/Models.msg")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/pb_rm_interfaces/msg" TYPE FILE FILES "/home/ethereal/rm_2025/rm_decision_2025_pb/src/Other Tools/pb_rm_interfaces/msg/RobotStateInfo.msg")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/pb_rm_interfaces/msg" TYPE FILE FILES "/home/ethereal/rm_2025/rm_decision_2025_pb/src/Others/pb_rm_interfaces/msg/RobotStateInfo.msg")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
@@ -695,7 +695,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/pb_rm_interfaces" TYPE FILE FILES "/home/ethereal/rm_2025/rm_decision_2025_pb/src/Other Tools/pb_rm_interfaces/package.xml")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/pb_rm_interfaces" TYPE FILE FILES "/home/ethereal/rm_2025/rm_decision_2025_pb/src/Others/pb_rm_interfaces/package.xml")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)

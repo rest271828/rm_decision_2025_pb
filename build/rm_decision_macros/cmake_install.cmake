@@ -1,4 +1,4 @@
-# Install script for directory: /home/ethereal/rm_2025/rm_decision_2025_pb/src/Other Tools/rm_decision_macros
+# Install script for directory: /home/ethereal/rm_2025/rm_decision_2025_pb/src/Others/rm_decision_macros
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -43,7 +43,7 @@ if(NOT DEFINED CMAKE_OBJDUMP)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include" TYPE DIRECTORY FILES "/home/ethereal/rm_2025/rm_decision_2025_pb/src/Other Tools/rm_decision_macros/include/")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include" TYPE DIRECTORY FILES "/home/ethereal/rm_2025/rm_decision_2025_pb/src/Others/rm_decision_macros/include/")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
@@ -137,7 +137,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/rm_decision_macros" TYPE FILE FILES "/home/ethereal/rm_2025/rm_decision_2025_pb/src/Other Tools/rm_decision_macros/package.xml")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/rm_decision_macros" TYPE FILE FILES "/home/ethereal/rm_2025/rm_decision_2025_pb/src/Others/rm_decision_macros/package.xml")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT)

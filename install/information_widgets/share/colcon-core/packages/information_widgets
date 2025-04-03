@@ -1,1 +1,1 @@
-auto_aim_interfaces:geometry_msgs:iw_interfaces:rclcpp:rclcpp_action:rm_decision_interfaces:std_msgs
+geometry_msgs:iw_interfaces:rclcpp:rclcpp_action:std_msgs

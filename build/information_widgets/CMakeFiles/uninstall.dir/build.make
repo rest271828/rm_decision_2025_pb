@@ -53,7 +53,7 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = "/home/ethereal/rm_2025/rm_decision_2025_pb/src/State Level/information_widgets"
+CMAKE_SOURCE_DIR = /home/ethereal/rm_2025/rm_decision_2025_pb/src/State/information_widgets
 
 # The top-level build directory on which CMake was run.
 CMAKE_BINARY_DIR = /home/ethereal/rm_2025/rm_decision_2025_pb/build/information_widgets
@@ -78,6 +78,6 @@ CMakeFiles/uninstall.dir/clean:
 .PHONY : CMakeFiles/uninstall.dir/clean
 
 CMakeFiles/uninstall.dir/depend:
-	cd /home/ethereal/rm_2025/rm_decision_2025_pb/build/information_widgets && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" "/home/ethereal/rm_2025/rm_decision_2025_pb/src/State Level/information_widgets" "/home/ethereal/rm_2025/rm_decision_2025_pb/src/State Level/information_widgets" /home/ethereal/rm_2025/rm_decision_2025_pb/build/information_widgets /home/ethereal/rm_2025/rm_decision_2025_pb/build/information_widgets /home/ethereal/rm_2025/rm_decision_2025_pb/build/information_widgets/CMakeFiles/uninstall.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/ethereal/rm_2025/rm_decision_2025_pb/build/information_widgets && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ethereal/rm_2025/rm_decision_2025_pb/src/State/information_widgets /home/ethereal/rm_2025/rm_decision_2025_pb/src/State/information_widgets /home/ethereal/rm_2025/rm_decision_2025_pb/build/information_widgets /home/ethereal/rm_2025/rm_decision_2025_pb/build/information_widgets /home/ethereal/rm_2025/rm_decision_2025_pb/build/information_widgets/CMakeFiles/uninstall.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/uninstall.dir/depend
 

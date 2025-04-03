@@ -57,7 +57,7 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = "/home/ethereal/rm_2025/rm_decision_2025_pb/src/Other Tools/pb_rm_interfaces"
+CMAKE_SOURCE_DIR = /home/ethereal/rm_2025/rm_decision_2025_pb/src/Others/pb_rm_interfaces
 
 # The top-level build directory on which CMake was run.
 CMAKE_BINARY_DIR = /home/ethereal/rm_2025/rm_decision_2025_pb/build/pb_rm_interfaces

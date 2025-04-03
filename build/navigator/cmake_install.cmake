@@ -1,4 +1,4 @@
-# Install script for directory: /home/ethereal/rm_2025/rm_decision_2025_pb/src/Action Level/navigator
+# Install script for directory: /home/ethereal/rm_2025/rm_decision_2025_pb/src/Action/navigator
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -43,7 +43,7 @@ if(NOT DEFINED CMAKE_OBJDUMP)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include" TYPE DIRECTORY FILES "/home/ethereal/rm_2025/rm_decision_2025_pb/src/Action Level/navigator/include/")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include" TYPE DIRECTORY FILES "/home/ethereal/rm_2025/rm_decision_2025_pb/src/Action/navigator/include/")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
@@ -66,7 +66,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libnavigator.so")
     file(RPATH_CHANGE
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libnavigator.so"
-         OLD_RPATH "/opt/ros/humble/lib:/home/ethereal/rm_2025/rm_decision_2025_pb/install/navigator_interfaces/lib:/home/ethereal/rm_2025/rm_decision_2025_pb/install/rm_decision_interfaces/lib:/home/ethereal/rm_2025/rm_decision_2025_pb/install/auto_aim_interfaces/lib:/home/ethereal/rm_2025/rm_decision_2025_pb/install/iw_interfaces/lib:/home/ethereal/rm_2025/rm_decision_2025_pb/install/information_widgets/lib:"
+         OLD_RPATH "/opt/ros/humble/lib:/home/ethereal/rm_2025/rm_decision_2025_pb/install/navigator_interfaces/lib:/home/ethereal/rm_2025/rm_decision_2025_pb/install/iw_interfaces/lib:/home/ethereal/rm_2025/rm_decision_2025_pb/install/information_widgets/lib:"
          NEW_RPATH "")
     if(CMAKE_INSTALL_DO_STRIP)
       execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libnavigator.so")
@@ -89,7 +89,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/navigator/navigator_node")
     file(RPATH_CHANGE
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/navigator/navigator_node"
-         OLD_RPATH "/home/ethereal/rm_2025/rm_decision_2025_pb/build/navigator:/opt/ros/humble/lib:/home/ethereal/rm_2025/rm_decision_2025_pb/install/navigator_interfaces/lib:/home/ethereal/rm_2025/rm_decision_2025_pb/install/rm_decision_interfaces/lib:/home/ethereal/rm_2025/rm_decision_2025_pb/install/auto_aim_interfaces/lib:/home/ethereal/rm_2025/rm_decision_2025_pb/install/iw_interfaces/lib:/home/ethereal/rm_2025/rm_decision_2025_pb/install/information_widgets/lib:"
+         OLD_RPATH "/home/ethereal/rm_2025/rm_decision_2025_pb/build/navigator:/opt/ros/humble/lib:/home/ethereal/rm_2025/rm_decision_2025_pb/install/navigator_interfaces/lib:/home/ethereal/rm_2025/rm_decision_2025_pb/install/iw_interfaces/lib:/home/ethereal/rm_2025/rm_decision_2025_pb/install/information_widgets/lib:"
          NEW_RPATH "")
     if(CMAKE_INSTALL_DO_STRIP)
       execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/navigator/navigator_node")
@@ -98,7 +98,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/navigator" TYPE DIRECTORY FILES "/home/ethereal/rm_2025/rm_decision_2025_pb/src/Action Level/navigator/launch")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/navigator" TYPE DIRECTORY FILES "/home/ethereal/rm_2025/rm_decision_2025_pb/src/Action/navigator/launch")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
@@ -169,11 +169,11 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/navigator" TYPE FILE FILES "/home/ethereal/rm_2025/rm_decision_2025_pb/src/Action Level/navigator/package.xml")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/navigator" TYPE FILE FILES "/home/ethereal/rm_2025/rm_decision_2025_pb/src/Action/navigator/package.xml")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/navigator" TYPE DIRECTORY FILES "/home/ethereal/rm_2025/rm_decision_2025_pb/src/Action Level/navigator/launch")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/navigator" TYPE DIRECTORY FILES "/home/ethereal/rm_2025/rm_decision_2025_pb/src/Action/navigator/launch")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT)

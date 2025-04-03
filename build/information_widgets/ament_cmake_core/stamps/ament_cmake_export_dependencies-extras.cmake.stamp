@@ -1,6 +1,6 @@
 # generated from ament_cmake_export_dependencies/cmake/ament_cmake_export_dependencies-extras.cmake.in
 
-set(_exported_dependencies "rclcpp;std_msgs;geometry_msgs;rm_decision_interfaces;auto_aim_interfaces;iw_interfaces;rclcpp_action")
+set(_exported_dependencies "rclcpp;std_msgs;geometry_msgs;iw_interfaces;rclcpp_action")
 
 find_package(ament_cmake_libraries QUIET REQUIRED)
 

@@ -1,1 +1,0 @@
-bool rfid_patrol_status
