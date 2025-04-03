@@ -1,0 +1,8 @@
+source;share/terminal_listener/hook/cmake_prefix_path.ps1
+source;share/terminal_listener/hook/cmake_prefix_path.dsv
+source;share/terminal_listener/hook/cmake_prefix_path.sh
+source;share/terminal_listener/local_setup.bash
+source;share/terminal_listener/local_setup.dsv
+source;share/terminal_listener/local_setup.ps1
+source;share/terminal_listener/local_setup.sh
+source;share/terminal_listener/local_setup.zsh

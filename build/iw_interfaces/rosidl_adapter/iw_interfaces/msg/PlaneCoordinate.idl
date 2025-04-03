@@ -1,0 +1,14 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from iw_interfaces/msg/PlaneCoordinate.msg
+// generated code does not contain a copyright notice
+
+
+module iw_interfaces {
+  module msg {
+    struct PlaneCoordinate {
+      double x;
+
+      double y;
+    };
+  };
+};

@@ -1,0 +1,34 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from iw_interfaces/msg/Chessboard.msg
+// generated code does not contain a copyright notice
+
+#include "builtin_interfaces/msg/Time.idl"
+#include "iw_interfaces/msg/Architecture.idl"
+#include "iw_interfaces/msg/Robot.idl"
+#include "iw_interfaces/msg/Terrain.idl"
+
+module iw_interfaces {
+  module msg {
+    @verbatim (language="comment", text=
+      "标识棋盘的基本信息和状态")
+    struct Chessboard {
+      uint32 faction;
+
+      boolean initialed;
+
+      builtin_interfaces::msg::Time timestamp;
+
+      @verbatim (language="comment", text=
+        "机器人信息")
+      sequence<iw_interfaces::msg::Robot> robots;
+
+      @verbatim (language="comment", text=
+        "地形信息")
+      sequence<iw_interfaces::msg::Terrain> terrains;
+
+      @verbatim (language="comment", text=
+        "建筑信息")
+      sequence<iw_interfaces::msg::Architecture> architectures;
+    };
+  };
+};

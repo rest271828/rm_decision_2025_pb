@@ -1,0 +1,17 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from iw_interfaces/msg/Area.msg
+// generated code does not contain a copyright notice
+
+#include "iw_interfaces/msg/PlaneCoordinate.idl"
+
+module iw_interfaces {
+  module msg {
+    @verbatim (language="comment", text=
+      "区域消息定义")
+    struct Area {
+      string label;
+
+      sequence<iw_interfaces::msg::PlaneCoordinate> vertices;
+    };
+  };
+};

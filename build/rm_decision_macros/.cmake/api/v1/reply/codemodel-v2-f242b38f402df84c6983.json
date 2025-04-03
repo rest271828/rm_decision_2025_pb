@@ -1,0 +1,79 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-26ec77109642e3e370c9.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.12"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"name" : "",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "rm_decision_macros",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "rm_decision_macros::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-rm_decision_macros-01cbb0999e9c29f6fc03.json",
+					"name" : "rm_decision_macros",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "rm_decision_macros_uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-rm_decision_macros_uninstall-9d5175fd196846e46fa3.json",
+					"name" : "rm_decision_macros_uninstall",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-uninstall-fce3686343218f36cddf.json",
+					"name" : "uninstall",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/ethereal/rm_2025/rm_decision_2025_pb/build/rm_decision_macros",
+		"source" : "/home/ethereal/rm_2025/rm_decision_2025_pb/src/Other Tools/rm_decision_macros"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 3
+	}
+}

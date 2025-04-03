@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/home/ethereal/rm_2025/rm_decision_2025_pb/build/rm_decision_macros",
+  "command": "/usr/bin/c++ -Drm_decision_macros_EXPORTS -I\"/home/ethereal/rm_2025/rm_decision_2025_pb/src/Other Tools/rm_decision_macros/include\" -fPIC   -Wall -Werror -std=gnu++17 -o CMakeFiles/rm_decision_macros.dir/src/decision_node_regist_macro.cpp.o -c \"/home/ethereal/rm_2025/rm_decision_2025_pb/src/Other Tools/rm_decision_macros/src/decision_node_regist_macro.cpp\"",
+  "file": "/home/ethereal/rm_2025/rm_decision_2025_pb/src/Other Tools/rm_decision_macros/src/decision_node_regist_macro.cpp"
+}
+]

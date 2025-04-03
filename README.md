@@ -12,13 +12,13 @@
 
 ## 1.1 information\_widgets 信息组件
 
-主要包含对信息组件`ChessboardHandle`和`Prism`类的定义。
+主要包含对信息组件`Chessboard`和`Prism`类的定义。
 
-### 1.1.1 ChessboardHandle类说明
+### 1.1.1 Chessboard类说明
 
-ChessboardHandle类的成员构成逻辑上很简洁，由`faction`（阵营），`robot`（机器人），`terrain`（地形）和`architecture`（建筑）四种要素构成。
+Chessboard类的成员构成逻辑上很简洁，由`faction`（阵营），`robot`（机器人），`terrain`（地形）和`architecture`（建筑）四种要素构成。
 
-### ChessboardHandle（棋盘权柄）
+### Chessboard（棋盘权柄）
 
 | 属性                   | 类型                                                                               | 描述            |
 | -------------------- | -------------------------------------------------------------------------------- | ------------- |
@@ -27,7 +27,7 @@ ChessboardHandle类的成员构成逻辑上很简洁，由`faction`（阵营）�
 | 地形簇（`terrains`）      | `std::shared_ptr<std::unordered_map`<br>`<std::string,std::shared_ptr<Terrain>>>`      | 赛场上的涵洞，坡道等地形  |
 | 建筑群（`architectures`） | `std::shared_ptr<std::unordered_map`<br>`<std::string,std::shared_ptr<Architecture>>>` | 赛场上的前哨站，基地等建筑 |
 
-值得说明的是，ChessboardHandle类中的大多数成员全部都是以智能指针的形式出现的，这是为了：
+值得说明的是，Chessboard类中的大多数成员全部都是以智能指针的形式出现的，这是为了：
 
 1. 在同一节点内部，棋盘权柄可以大量分发而不产生额外的空间消耗；
 
@@ -93,7 +93,7 @@ ChessboardHandle类的成员构成逻辑上很简洁，由`faction`（阵营）�
 | 生命值（hp）       | `uint`    | 建筑的生命值 |
 | 阵营（`faction`） | `faction` | 建筑所属阵营 |
 
-ChessboardHandle还拥有一系列的方法，可以方便地获取赛场中不同对象的状态信息。
+Chessboard还拥有一系列的方法，可以方便地获取赛场中不同对象的状态信息。
 
 ```c++
 inline std::shared_ptr<Robot> friend_robot(const uint& id);
@@ -165,15 +165,15 @@ public:
 
 #### 1.1.3 从对象到消息
 
-`ChessboardHandle`类和`Prism`类都拥有`update_from_message`方法和`to_message`方法，可以很方便地完成于其对应消息类型的互相转换。
+`Chessboard`类和`Prism`类都拥有`update_from_message`方法和`to_message`方法，可以很方便地完成于其对应消息类型的互相转换。
 
 ### 1.2 iw\_interfaces 信息组件的消息表示
 
-包含所有information\_widgets中定义的组件的必要消息表示。`ChessboardHandle`类和`Prism`类，以及`Robot`，`Terrain`，`architecture`类，都可以通过各自的`update_from_message`方法和`to_message`方法完成和这些消息表示的互相转化。
+包含所有information\_widgets中定义的组件的必要消息表示。`Chessboard`类和`Prism`类，以及`Robot`，`Terrain`，`architecture`类，都可以通过各自的`update_from_message`方法和`to_message`方法完成和这些消息表示的互相转化。
 
 ### 1.3 sensing\_unit 感知单元
 
-将所有能够传递给机器人的消息整理归纳进`ChessboardHandle`对象和`Prism`对象中，随后将它们转换成对应的消息表示，以50Hz的频率发布出来，其话题名称分别为`"rm_decision/chessboard"`和`"rm_decision/prism/<自身id>"`。于是，决策层只需要持有接收相应消息的订阅器，就可以获得实时更新的信息。
+将所有能够传递给机器人的消息整理归纳进`Chessboard`对象和`Prism`对象中，随后将它们转换成对应的消息表示，以50Hz的频率发布出来，其话题名称分别为`"rm_decision/chessboard"`和`"rm_decision/prism/<自身id>"`。于是，决策层只需要持有接收相应消息的订阅器，就可以获得实时更新的信息。
 
 ## 2. 动作层
 

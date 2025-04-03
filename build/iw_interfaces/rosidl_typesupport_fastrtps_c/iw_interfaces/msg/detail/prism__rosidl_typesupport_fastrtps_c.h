@@ -1,0 +1,37 @@
+// generated from rosidl_typesupport_fastrtps_c/resource/idl__rosidl_typesupport_fastrtps_c.h.em
+// with input from iw_interfaces:msg/Prism.idl
+// generated code does not contain a copyright notice
+#ifndef IW_INTERFACES__MSG__DETAIL__PRISM__ROSIDL_TYPESUPPORT_FASTRTPS_C_H_
+#define IW_INTERFACES__MSG__DETAIL__PRISM__ROSIDL_TYPESUPPORT_FASTRTPS_C_H_
+
+
+#include <stddef.h>
+#include "rosidl_runtime_c/message_type_support_struct.h"
+#include "rosidl_typesupport_interface/macros.h"
+#include "iw_interfaces/msg/rosidl_typesupport_fastrtps_c__visibility_control.h"
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+ROSIDL_TYPESUPPORT_FASTRTPS_C_PUBLIC_iw_interfaces
+size_t get_serialized_size_iw_interfaces__msg__Prism(
+  const void * untyped_ros_message,
+  size_t current_alignment);
+
+ROSIDL_TYPESUPPORT_FASTRTPS_C_PUBLIC_iw_interfaces
+size_t max_serialized_size_iw_interfaces__msg__Prism(
+  bool & full_bounded,
+  bool & is_plain,
+  size_t current_alignment);
+
+ROSIDL_TYPESUPPORT_FASTRTPS_C_PUBLIC_iw_interfaces
+const rosidl_message_type_support_t *
+ROSIDL_TYPESUPPORT_INTERFACE__MESSAGE_SYMBOL_NAME(rosidl_typesupport_fastrtps_c, iw_interfaces, msg, Prism)();
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif  // IW_INTERFACES__MSG__DETAIL__PRISM__ROSIDL_TYPESUPPORT_FASTRTPS_C_H_

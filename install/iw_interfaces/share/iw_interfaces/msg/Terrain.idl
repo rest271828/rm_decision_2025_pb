@@ -1,0 +1,19 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from iw_interfaces/msg/Terrain.msg
+// generated code does not contain a copyright notice
+
+#include "iw_interfaces/msg/PlaneCoordinate.idl"
+
+module iw_interfaces {
+  module msg {
+    @verbatim (language="comment", text=
+      "地形消息定义")
+    struct Terrain {
+      string label;
+
+      uint32 type;
+
+      sequence<iw_interfaces::msg::PlaneCoordinate> vertices;
+    };
+  };
+};

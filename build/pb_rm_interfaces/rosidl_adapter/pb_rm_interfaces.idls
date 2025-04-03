@@ -1,0 +1,11 @@
+/home/ethereal/rm_2025/rm_decision_2025_pb/build/pb_rm_interfaces/rosidl_adapter/pb_rm_interfaces:msg/Buff.idl
+/home/ethereal/rm_2025/rm_decision_2025_pb/build/pb_rm_interfaces/rosidl_adapter/pb_rm_interfaces:msg/EventData.idl
+/home/ethereal/rm_2025/rm_decision_2025_pb/build/pb_rm_interfaces/rosidl_adapter/pb_rm_interfaces:msg/GameRobotHP.idl
+/home/ethereal/rm_2025/rm_decision_2025_pb/build/pb_rm_interfaces/rosidl_adapter/pb_rm_interfaces:msg/GameStatus.idl
+/home/ethereal/rm_2025/rm_decision_2025_pb/build/pb_rm_interfaces/rosidl_adapter/pb_rm_interfaces:msg/GroundRobotPosition.idl
+/home/ethereal/rm_2025/rm_decision_2025_pb/build/pb_rm_interfaces/rosidl_adapter/pb_rm_interfaces:msg/RfidStatus.idl
+/home/ethereal/rm_2025/rm_decision_2025_pb/build/pb_rm_interfaces/rosidl_adapter/pb_rm_interfaces:msg/RobotStatus.idl
+/home/ethereal/rm_2025/rm_decision_2025_pb/build/pb_rm_interfaces/rosidl_adapter/pb_rm_interfaces:msg/Gimbal.idl
+/home/ethereal/rm_2025/rm_decision_2025_pb/build/pb_rm_interfaces/rosidl_adapter/pb_rm_interfaces:msg/GimbalCmd.idl
+/home/ethereal/rm_2025/rm_decision_2025_pb/build/pb_rm_interfaces/rosidl_adapter/pb_rm_interfaces:msg/Models.idl
+/home/ethereal/rm_2025/rm_decision_2025_pb/build/pb_rm_interfaces/rosidl_adapter/pb_rm_interfaces:msg/RobotStateInfo.idl
