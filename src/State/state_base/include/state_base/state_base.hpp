@@ -7,11 +7,55 @@
 #include "information_widgets/chessboard_def.hpp"
 #include "information_widgets/prism_def.hpp"
 
-class SensingBase : public rclcpp::Node {
+
+template<typename T>
+class UpdateHandler {
 public:
-    SensingBase(const rclcpp::NodeOptions& options);
+    UpdateHandler(
+        const std::shared_ptr<RMDecision::Chessboard> chessboardPtr, const std::shared_ptr<RMDecision::Prism> prismPtr) :
+        chessboard_ptr_(chessboardPtr), prism_ptr_(prismPtr) {}
+
+    virtual ~UpdateHandler() {}
+
+    virtual std::string topic() const = 0;
+
+    virtual uint queue_depth() const {
+        return 10;
+    }
+
+    virtual void update_chessboard(const std::shared_ptr<T> msg) const = 0;
+
+    virtual void update_prism(const std::shared_ptr<T> msg) const = 0;
+
+    void callback(const std::shared_ptr<T> msg) {
+        update_chessboard(msg);
+        update_prism(msg);
+    }
+
+protected:
+    std::shared_ptr<RMDecision::Chessboard> chessboard_ptr_;
+    std::shared_ptr<RMDecision::Prism> prism_ptr_;
+};
+
+class StateBase : public rclcpp::Node {
+public:
+    StateBase(const rclcpp::NodeOptions& options);
+
+protected:
+template <typename T>
+    void create_updater(const std::shared_ptr<UpdateHandler<T>> processor) {
+        auto subscription = this->create_subscription<T>(
+            processor->topic(), processor->queue_depth(),
+            [processor](const std::shared_ptr<T> msg) {
+                processor->callback(msg);
+            });
+
+        updaters_.emplace_back(subscription);
+    }
 
 private:
+    std::vector<rclcpp::SubscriptionBase::SharedPtr> updaters_;
+
     RMDecision::Chessboard chessboard_;
     RMDecision::Prism prism_;
 

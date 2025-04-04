@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(sensing_base)
+project(state_base)
 
 ## Use C++17
 set(CMAKE_CXX_STANDARD 17)
@@ -17,14 +17,14 @@ find_package(ament_cmake_auto REQUIRED)
 ament_auto_find_build_dependencies()
 
 set(SRC_LIST
-  src/sensing_base.cpp
+  src/state_base.cpp
 )
 
 set(HEAD_LIST
-  include/sensing_base/sensing_base.hpp
+  include/state_base/state_base.hpp
 )
 
-ament_auto_add_library(sensing_base_lib SHARED
+ament_auto_add_library(state_base_lib SHARED
   ${SRC_LIST}
   ${HEAD_LIST}
 )
