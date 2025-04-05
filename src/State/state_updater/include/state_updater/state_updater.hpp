@@ -1,5 +1,6 @@
 #include "pb_rm_interfaces/msg/game_robot_hp.hpp"
 #include "pb_rm_interfaces/msg/game_status.hpp"
+#include "pb_rm_interfaces/msg/robot_status.hpp"
 #include "state_base.hpp"
 
 class HpUpdateHandler
@@ -29,6 +30,8 @@ public:
 
         (*chessboard_ptr_->architectures)["Red_Base"]->hp = msg->red_base_hp;
         (*chessboard_ptr_->architectures)["Blue_Base"]->hp = msg->blue_base_hp;
+
+        chessboard_ptr_->timestamp = clock_->now();
     }
 
     void update_prism(const pb_rm_interfaces::msg::GameRobotHP::SharedPtr msg) {
@@ -37,7 +40,7 @@ public:
     }
 };
 
-class GameStatuUpdateHandler
+class GameStatusUpdateHandler
     : public UpdateHandler<pb_rm_interfaces::msg::GameStatus> {
 public:
     using UpdateHandler::UpdateHandler;
@@ -52,5 +55,36 @@ public:
 
     void update_prism(const pb_rm_interfaces::msg::GameStatus::SharedPtr msg) {
         prism_ptr_->game->game_start = (msg->game_progress == msg->RUNNING);
+    }
+};
+
+class RobotStatusUpdateHandler
+    : public UpdateHandler<pb_rm_interfaces::msg::GameStatus> {
+public:
+    using UpdateHandler::UpdateHandler;
+
+    std::string topic() {
+        return "referee/robot_status";
+    }
+
+    void update_chessboard(const pb_rm_interfaces::msg::RobotStatus::SharedPtr msg) {
+        std::shared_ptr<RMDecision::Robot> robot = chessboard_ptr_->friend_robot(msg->robot_id);
+        robot->hp = msg->current_hp;
+        robot->level = msg->robot_level;
+
+        robot->pose.header.frame_id = "map";
+        robot->pose.header.stamp = clock_->now();
+        robot->pose.pose = msg->robot_pos;
+
+        robot->missing = false;
+
+        chessboard_ptr_->timestamp = clock_->now();
+    }
+
+    void update_prism(const pb_rm_interfaces::msg::RobotStatus::SharedPtr msg) {
+        if (msg->robot_id != prism_ptr_->self->id)
+            return;
+        prism_ptr_->self->hp = msg->current_hp;
+        prism_ptr_->self->pose = msg->robot_pos;
     }
 };

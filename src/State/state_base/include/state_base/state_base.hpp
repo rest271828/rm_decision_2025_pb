@@ -13,7 +13,7 @@ class UpdateHandler {
 public:
     UpdateHandler(
         const std::shared_ptr<RMDecision::Chessboard> chessboardPtr, const std::shared_ptr<RMDecision::Prism> prismPtr) :
-        chessboard_ptr_(chessboardPtr), prism_ptr_(prismPtr) {}
+        chessboard_ptr_(chessboardPtr), prism_ptr_(prismPtr), clock_(std::make_shared<rclcpp::Clock>(RCL_ROS_TIME)) {}
 
     virtual ~UpdateHandler() {}
 
@@ -35,6 +35,7 @@ public:
 protected:
     std::shared_ptr<RMDecision::Chessboard> chessboard_ptr_;
     std::shared_ptr<RMDecision::Prism> prism_ptr_;
+    rclcpp::Clock::SharedPtr clock_;
 };
 
 class StateBase : public rclcpp::Node {
