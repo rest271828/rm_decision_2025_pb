@@ -9,7 +9,7 @@ Navigator::Navigator(const rclcpp::NodeOptions& options) : Node("navigator", opt
 
     nav_msg_sub_ = this->create_subscription<navigator_interfaces::msg::Navigate>(
         "to_navigator", 10, std::bind(&Navigator::nav_callback, this, std::placeholders::_1), sub_opt);
-    current_pose_pub_ = this->create_publisher<geometry_msgs::msg::PoseStamped>("/navigator/current_pose", 10);
+    current_pose_pub_ = this->create_publisher<geometry_msgs::msg::PoseStamped>("navigator/current_pose", 10);
 
     nav_to_pose_client_ = rclcpp_action::create_client<nav2_msgs::action::NavigateToPose>(this, "navigate_to_pose", callback_group_);
     send_goal_options_.goal_response_callback = std::bind(&Navigator::goal_response_callback, this,
@@ -110,7 +110,7 @@ void Navigator::get_current_pose() {
     geometry_msgs::msg::TransformStamped odom_msg;
     try {
         odom_msg = tf2_buffer_->lookupTransform(
-            "map", "livox_frame",
+            "map", "chassis",
             tf2::TimePointZero);
     } catch (const tf2::TransformException& ex) {
         RCLCPP_INFO(

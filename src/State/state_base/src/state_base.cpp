@@ -27,7 +27,7 @@ StateBase::StateBase(const rclcpp::NodeOptions& options) : Node("observe_unit", 
     pubOpt.callback_group = callback_group_;
 
     current_pose_sub_ = this->create_subscription<geometry_msgs::msg::PoseStamped>(
-        "/navigator/current_pose", 10, std::bind(&StateBase::current_pose_callback, this, std::placeholders::_1), subOpt);
+        "navigator/current_pose", 10, std::bind(&StateBase::current_pose_callback, this, std::placeholders::_1), subOpt);
 
     chessboard_pub_ = this->create_publisher<iw_interfaces::msg::Chessboard>("rm_decision/chessboard", 10, pubOpt);
     std::string prismPubTopicName = "rm_decision/prism/" + std::to_string(prism_.self->id);

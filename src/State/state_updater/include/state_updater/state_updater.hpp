@@ -85,6 +85,8 @@ public:
         if (msg->robot_id != prism_ptr_->self->id)
             return;
         prism_ptr_->self->hp = msg->current_hp;
-        prism_ptr_->self->pose = msg->robot_pos;
+        prism_ptr_->self->pose.header.frame_id = "map";
+        prism_ptr_->self->pose.header.stamp = clock_->now();
+        prism_ptr_->self->pose.pose = msg->robot_pos;
     }
 };
