@@ -7,6 +7,7 @@
 #include "iw_interfaces/msg/prism.hpp"
 #include "navigator_interfaces/msg/navigate.hpp"
 #include "rclcpp/rclcpp.hpp"
+#include "std_msgs/msg/float32.hpp"
 
 namespace RMDecision {
 class DecisionBase : public rclcpp::Node {
@@ -15,13 +16,20 @@ public:
 
 protected:
     void nav_to_pose(const PoseStamped& stampedPose, bool instant);
+
+    void rotate_to_angle(const double& targetAngle);
+    void set_angular_velocity(const double& angularV);
+    double get_current_angle();
+
     Chessboard chessboard_;
     Prism prism_;
 
 private:
     rclcpp::Subscription<iw_interfaces::msg::Chessboard>::SharedPtr chessboard_sub_;
     rclcpp::Subscription<iw_interfaces::msg::Prism>::SharedPtr prism_sub_;
+
     rclcpp::Publisher<navigator_interfaces::msg::Navigate>::SharedPtr nav_pub_;
+    rclcpp::Publisher<std_msgs::msg::Float32>::SharedPtr angle_pub_;
 
     rclcpp::CallbackGroup::SharedPtr callback_group_;
 
