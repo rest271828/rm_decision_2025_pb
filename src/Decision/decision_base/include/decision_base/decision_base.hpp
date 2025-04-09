@@ -18,6 +18,7 @@ protected:
     void nav_to_point(const double& x, const double& y, bool instant = true);
     void nav_to_point(const PlaneCoordinate& targetPoint, bool instant = true);
     void nav_to_pose(const PoseStamped& stampedPose, bool instant);
+    PlaneCoordinate get_current_coordinate();
 
     void rotate_to_vec(const PlaneCoordinate& vec);
     void rotate_to_angle(const double& targetAngle);

@@ -56,6 +56,10 @@ void DecisionBase::nav_to_pose(const PoseStamped& stampedPose, bool instant) {
     nav_pub_->publish(msg);
 }
 
+PlaneCoordinate DecisionBase::get_current_coordinate() {
+    return PlaneCoordinate(prism_.self->pose);
+}
+
 void DecisionBase::rotate_to_vec(const PlaneCoordinate& vec) {
     double angle = std::atan2(vec.y, vec.x);
     rotate_to_angle(angle);
