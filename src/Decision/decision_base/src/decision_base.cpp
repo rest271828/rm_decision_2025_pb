@@ -31,6 +31,24 @@ void DecisionBase::prism_sub_callback(const iw_interfaces::msg::Prism::SharedPtr
     prism_.update_from_message(*msg);
 }
 
+void DecisionBase::nav_to_point(const double& x, const double& y, bool instant) {
+    nav_to_point(PlaneCoordinate(x, y), instant);
+}
+
+void DecisionBase::nav_to_point(const PlaneCoordinate& targetPoint, bool instant) {
+    navigator_interfaces::msg::Navigate msg;
+    msg.pose.header.stamp = this->now();
+    msg.pose.header.frame_id = "map";
+    msg.pose.pose.position.x = targetPoint.x;
+    msg.pose.pose.position.y = targetPoint.y;
+    msg.pose.pose.position.z = 0.0;
+    msg.pose.pose.orientation.x = 0.0;
+    msg.pose.pose.orientation.y = 0.0;
+    msg.pose.pose.orientation.z = 0.0;
+    msg.pose.pose.orientation.w = 1.0;
+    nav_pub_->publish(msg);
+}
+
 void DecisionBase::nav_to_pose(const PoseStamped& stampedPose, bool instant) {
     navigator_interfaces::msg::Navigate msg;
     msg.pose = stampedPose;
@@ -38,10 +56,16 @@ void DecisionBase::nav_to_pose(const PoseStamped& stampedPose, bool instant) {
     nav_pub_->publish(msg);
 }
 
+void DecisionBase::rotate_to_vec(const PlaneCoordinate& vec) {
+    double angle = std::atan2(vec.y, vec.x);
+    rotate_to_angle(angle);
+}
+
 void DecisionBase::rotate_to_angle(const double& targetAngle) {
     const double KP = 1.0;
     const double KI = 0.01;
     const double KD = 0.1;
+
     const double TOLARANCE = 0.01;
     const double RATE = 20;
 
@@ -51,7 +75,7 @@ void DecisionBase::rotate_to_angle(const double& targetAngle) {
 
     while (rclcpp::ok()) {
         auto currentTime = this->now();
-        double deltaTime = (currentTime - lastTime).seconds(); // 动态计算时间间隔
+        double deltaTime = (currentTime - lastTime).seconds();  // 动态计算时间间隔
         lastTime = currentTime;
 
         double currentAngle = get_current_angle();

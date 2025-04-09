@@ -15,8 +15,11 @@ public:
     explicit DecisionBase(uint selfId, std::string nodeName, const rclcpp::NodeOptions& options);
 
 protected:
+    void nav_to_point(const double& x, const double& y, bool instant = true);
+    void nav_to_point(const PlaneCoordinate& targetPoint, bool instant = true);
     void nav_to_pose(const PoseStamped& stampedPose, bool instant);
 
+    void rotate_to_vec(const PlaneCoordinate& vec);
     void rotate_to_angle(const double& targetAngle);
     void set_angular_velocity(const double& angularV);
     double get_current_angle();
