@@ -25,7 +25,6 @@ DecisionBase::DecisionBase(uint selfId, std::string nodeName, const rclcpp::Node
 }
 
 void DecisionBase::chessboard_sub_callback(const iw_interfaces::msg::Chessboard::SharedPtr msg) {
-    std::cout << 1 << std::endl;
     if (msg->initialed && rclcpp::Time(msg->timestamp) > chessboard_.timestamp) {
         chessboard_.update_from_message(*msg);
     }
@@ -80,19 +79,25 @@ void DecisionBase::rotate_to_angle(const double& targetAngle) const {
 
     const double TOLARANCE = 0.01;
     const double RATE = 20;
+    const double TIME_LIMIT = 10; // 单位：秒
 
     double previousError = 0.0;  // 上一次的误差
     double integral = 0.0;       // 误差的积分项
-    rclcpp::Time lastTime = this->now();
+    rclcpp::Time start_time = this->now();
+    rclcpp::Time lastTime = start_time;
 
     while (rclcpp::ok()) {
         auto currentTime = this->now();
-        std::cout << 1 << std::endl;
         double deltaTime = (currentTime - lastTime).seconds();  // 动态计算时间间隔
         lastTime = currentTime;
 
         double currentAngle = get_current_angle();
         double error = targetAngle - currentAngle;
+
+        if (std::abs(error) < TOLARANCE || (this->now() - start_time).seconds() > TIME_LIMIT) {
+            set_angular_velocity(0.0);
+            break;
+        }
 
         if (error > 180.0) {
             error -= 360.0;
@@ -107,11 +112,6 @@ void DecisionBase::rotate_to_angle(const double& targetAngle) const {
         set_angular_velocity(angularV);
 
         previousError = error;
-
-        if (std::abs(error) < TOLARANCE) {
-            set_angular_velocity(0.0);
-            break;
-        }
 
         rclcpp::Rate(RATE).sleep();
     }

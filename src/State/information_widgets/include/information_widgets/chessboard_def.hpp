@@ -19,7 +19,7 @@ public:
         terrains = std::make_shared<std::unordered_map<std::string, std::shared_ptr<Terrain>>>();
         architectures = std::make_shared<std::unordered_map<std::string, std::shared_ptr<Architecture>>>();
         initialed = false;
-        timestamp = rclcpp::Time(-1, 0, RCL_ROS_TIME);
+        timestamp = rclcpp::Time(0, 0, RCL_ROS_TIME);
     }
 
     Chessboard(const iw_interfaces::msg::Chessboard& msg);

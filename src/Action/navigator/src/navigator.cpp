@@ -45,8 +45,8 @@ void Navigator::goal_response_callback(
 void Navigator::feedback_callback(
     rclcpp_action::ClientGoalHandle<nav2_msgs::action::NavigateToPose>::SharedPtr future,
     const std::shared_ptr<const nav2_msgs::action::NavigateToPose::Feedback> feedback) {
-    RCLCPP_INFO(this->get_logger(), "Current point: (%.2f, %.2f)", feedback->current_pose.pose.position.x, feedback->current_pose.pose.position.y);
-    RCLCPP_INFO(this->get_logger(), "Received feedback: distance to target point: %.2f m", feedback->distance_remaining);
+    RCLCPP_INFO(this->get_logger(), "Current point: (%.3f, %.3f)", feedback->current_pose.pose.position.x, feedback->current_pose.pose.position.y);
+    RCLCPP_INFO(this->get_logger(), "Received feedback: distance to target point: %.3f m", feedback->distance_remaining);
 }
 
 void Navigator::result_callback(
@@ -92,13 +92,13 @@ void Navigator::timer_callback() {
 }
 
 void Navigator::nav_to_pose(const geometry_msgs::msg::PoseStamped& msg) {
-    RCLCPP_INFO(this->get_logger(), "Received goal point: (%.2f, %.2f)", msg.pose.position.x, msg.pose.position.y);
+    RCLCPP_INFO(this->get_logger(), "Received goal point: (%.3f, %.3f)", msg.pose.position.x, msg.pose.position.y);
     nav_to_pose_client_->wait_for_action_server();
     auto goal_msg = nav2_msgs::action::NavigateToPose::Goal();
     goal_msg.pose = msg;
     goal_msg.behavior_tree = "";
     available_ = false;
-    RCLCPP_INFO(this->get_logger(), "Send goal point: (%.2f, %.2f)", goal_msg.pose.pose.position.x, goal_msg.pose.pose.position.y);
+    RCLCPP_INFO(this->get_logger(), "Send goal point: (%.3f, %.3f)", goal_msg.pose.pose.position.x, goal_msg.pose.pose.position.y);
     send_goal_future_ = nav_to_pose_client_->async_send_goal(goal_msg, send_goal_options_);
 }
 
