@@ -11,7 +11,8 @@ template <typename T>
 class UpdateHandler {
 public:
     UpdateHandler(
-        const std::shared_ptr<RMDecision::Chessboard> chessboardPtr, const std::shared_ptr<RMDecision::Prism> prismPtr) : chessboard_ptr_(chessboardPtr), prism_ptr_(prismPtr), clock_(std::make_shared<rclcpp::Clock>(RCL_ROS_TIME)) {}
+        RMDecision::Chessboard* chessboardPtr, RMDecision::Prism* prismPtr)
+        : chessboard_ptr_(chessboardPtr), prism_ptr_(prismPtr), clock_(std::make_shared<rclcpp::Clock>(RCL_ROS_TIME)) {}
 
     virtual ~UpdateHandler() {}
 
@@ -31,8 +32,8 @@ public:
     }
 
 protected:
-    std::shared_ptr<RMDecision::Chessboard> chessboard_ptr_;
-    std::shared_ptr<RMDecision::Prism> prism_ptr_;
+    RMDecision::Chessboard* chessboard_ptr_;
+    RMDecision::Prism* prism_ptr_;
     rclcpp::Clock::SharedPtr clock_;
 };
 
@@ -43,8 +44,7 @@ public:
 protected:
     template <typename T>
     std::shared_ptr<T> create_updater() {
-        return std::make_shared<T>(
-            std::shared_ptr<RMDecision::Chessboard>(&chessboard_), std::shared_ptr<RMDecision::Prism>(&prism_));
+        return std::make_shared<T>(&chessboard_, &prism_);
     }
 
     template <typename T>

@@ -25,6 +25,7 @@ DecisionBase::DecisionBase(uint selfId, std::string nodeName, const rclcpp::Node
 }
 
 void DecisionBase::chessboard_sub_callback(const iw_interfaces::msg::Chessboard::SharedPtr msg) {
+    std::cout << 1 << std::endl;
     if (msg->initialed && rclcpp::Time(msg->timestamp) > chessboard_.timestamp) {
         chessboard_.update_from_message(*msg);
     }
@@ -86,6 +87,7 @@ void DecisionBase::rotate_to_angle(const double& targetAngle) const {
 
     while (rclcpp::ok()) {
         auto currentTime = this->now();
+        std::cout << 1 << std::endl;
         double deltaTime = (currentTime - lastTime).seconds();  // 动态计算时间间隔
         lastTime = currentTime;
 
