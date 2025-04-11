@@ -16,6 +16,9 @@ DecisionBase::DecisionBase(uint selfId, std::string nodeName, const rclcpp::Node
     prism_sub_ = this->create_subscription<iw_interfaces::msg::Prism>(
         ("rm_decision/prism" + std::to_string(selfId)).c_str(), 10,
         std::bind(&DecisionBase::prism_sub_callback, this, std::placeholders::_1), subOpt);
+    test_args_sub_ = this->create_subscription<test_taker_interfaces::msg::TestArgs>(
+        "test_command", 10,
+        std::bind(&DecisionBase::test_callback, this, std::placeholders::_1), subOpt);
 
     nav_pub_ = this->create_publisher<navigator_interfaces::msg::Navigate>("to_navigator", 10, pubOpt);
     angle_pub_ = this->create_publisher<std_msgs::msg::Float32>("to_rotator", 10, pubOpt);

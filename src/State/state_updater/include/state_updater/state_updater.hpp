@@ -1,18 +1,18 @@
 #include "pb_rm_interfaces/msg/game_robot_hp.hpp"
 #include "pb_rm_interfaces/msg/game_status.hpp"
 #include "pb_rm_interfaces/msg/robot_status.hpp"
-#include "state_base.hpp"
+#include "state_base/state_base.hpp"
 
 class HpUpdateHandler
     : public UpdateHandler<pb_rm_interfaces::msg::GameRobotHP> {
 public:
     using UpdateHandler::UpdateHandler;
 
-    std::string topic() {
+    std::string topic() const override {
         return "referee/all_robot_hp";
     }
 
-    void update_chessboard(const pb_rm_interfaces::msg::GameRobotHP::SharedPtr msg) {
+    void update_chessboard(const pb_rm_interfaces::msg::GameRobotHP::SharedPtr msg) const override {
         (*chessboard_ptr_->robots)["R1"]->hp = msg->red_1_robot_hp;
         (*chessboard_ptr_->robots)["R2"]->hp = msg->red_2_robot_hp;
         (*chessboard_ptr_->robots)["R3"]->hp = msg->red_3_robot_hp;
@@ -34,40 +34,42 @@ public:
         chessboard_ptr_->timestamp = clock_->now();
     }
 
-    void update_prism(const pb_rm_interfaces::msg::GameRobotHP::SharedPtr msg) {
+    void update_prism(const pb_rm_interfaces::msg::GameRobotHP::SharedPtr msg) const override {
         prism_ptr_->self->hp = chessboard_ptr_->friend_robot(prism_ptr_->self->id)->hp;
         prism_ptr_->track->hp = chessboard_ptr_->enemy_robot(prism_ptr_->track->id)->hp;
     }
 };
+
 
 class GameStatusUpdateHandler
     : public UpdateHandler<pb_rm_interfaces::msg::GameStatus> {
 public:
     using UpdateHandler::UpdateHandler;
 
-    std::string topic() {
+    std::string topic() const override {
         return "referee/game_status";
     }
 
-    void update_chessboard(const pb_rm_interfaces::msg::GameStatus::SharedPtr msg) {
+    void update_chessboard(const pb_rm_interfaces::msg::GameStatus::SharedPtr msg) const override {
         return;
     }
 
-    void update_prism(const pb_rm_interfaces::msg::GameStatus::SharedPtr msg) {
+    void update_prism(const pb_rm_interfaces::msg::GameStatus::SharedPtr msg) const override {
         prism_ptr_->game->game_start = (msg->game_progress == msg->RUNNING);
     }
 };
 
+
 class RobotStatusUpdateHandler
-    : public UpdateHandler<pb_rm_interfaces::msg::GameStatus> {
+    : public UpdateHandler<pb_rm_interfaces::msg::RobotStatus> {
 public:
     using UpdateHandler::UpdateHandler;
 
-    std::string topic() {
+    std::string topic() const override {
         return "referee/robot_status";
     }
 
-    void update_chessboard(const pb_rm_interfaces::msg::RobotStatus::SharedPtr msg) {
+    void update_chessboard(const pb_rm_interfaces::msg::RobotStatus::SharedPtr msg) const override {
         std::shared_ptr<RMDecision::Robot> robot = chessboard_ptr_->friend_robot(msg->robot_id);
         robot->hp = msg->current_hp;
         robot->level = msg->robot_level;
@@ -81,7 +83,7 @@ public:
         chessboard_ptr_->timestamp = clock_->now();
     }
 
-    void update_prism(const pb_rm_interfaces::msg::RobotStatus::SharedPtr msg) {
+    void update_prism(const pb_rm_interfaces::msg::RobotStatus::SharedPtr msg) const override {
         if (msg->robot_id != prism_ptr_->self->id)
             return;
         prism_ptr_->self->hp = msg->current_hp;

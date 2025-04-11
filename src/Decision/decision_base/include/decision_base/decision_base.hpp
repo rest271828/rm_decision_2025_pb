@@ -5,6 +5,7 @@
 #include "information_widgets/rm_decision_defs.hpp"
 #include "iw_interfaces/msg/chessboard.hpp"
 #include "iw_interfaces/msg/prism.hpp"
+#include "test_taker_interfaces/msg/test_args.hpp"
 #include "navigator_interfaces/msg/navigate.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/float32.hpp"
@@ -31,6 +32,7 @@ protected:
 private:
     rclcpp::Subscription<iw_interfaces::msg::Chessboard>::SharedPtr chessboard_sub_;
     rclcpp::Subscription<iw_interfaces::msg::Prism>::SharedPtr prism_sub_;
+    rclcpp::Subscription<test_taker_interfaces::msg::TestArgs>::SharedPtr test_args_sub_;
 
     rclcpp::Publisher<navigator_interfaces::msg::Navigate>::SharedPtr nav_pub_;
     rclcpp::Publisher<std_msgs::msg::Float32>::SharedPtr angle_pub_;
@@ -40,6 +42,8 @@ private:
     void chessboard_sub_callback(const iw_interfaces::msg::Chessboard::SharedPtr msg);
 
     void prism_sub_callback(const iw_interfaces::msg::Prism::SharedPtr msg);
+
+    virtual void test_callback(const test_taker_interfaces::msg::TestArgs::SharedPtr msg) const = 0;
 };
 
 }  // namespace RMDecision

@@ -1,5 +1,7 @@
-#include "rclcpp/rclcpp.hpp"
+#pragma once
+
 #include "geometry_msgs/msg/twist.hpp"
+#include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/float32.hpp"
 
 class Rotator : public rclcpp::Node {

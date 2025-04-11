@@ -7,13 +7,11 @@
 #include "information_widgets/chessboard_def.hpp"
 #include "information_widgets/prism_def.hpp"
 
-
-template<typename T>
+template <typename T>
 class UpdateHandler {
 public:
     UpdateHandler(
-        const std::shared_ptr<RMDecision::Chessboard> chessboardPtr, const std::shared_ptr<RMDecision::Prism> prismPtr) :
-        chessboard_ptr_(chessboardPtr), prism_ptr_(prismPtr), clock_(std::make_shared<rclcpp::Clock>(RCL_ROS_TIME)) {}
+        const std::shared_ptr<RMDecision::Chessboard> chessboardPtr, const std::shared_ptr<RMDecision::Prism> prismPtr) : chessboard_ptr_(chessboardPtr), prism_ptr_(prismPtr), clock_(std::make_shared<rclcpp::Clock>(RCL_ROS_TIME)) {}
 
     virtual ~UpdateHandler() {}
 
@@ -43,8 +41,14 @@ public:
     StateBase(const rclcpp::NodeOptions& options);
 
 protected:
-template <typename T>
-    void create_updater(const std::shared_ptr<UpdateHandler<T>> processor) {
+    template <typename T>
+    std::shared_ptr<T> create_updater() {
+        return std::make_shared<T>(
+            std::shared_ptr<RMDecision::Chessboard>(&chessboard_), std::shared_ptr<RMDecision::Prism>(&prism_));
+    }
+
+    template <typename T>
+    void register_updater(const std::shared_ptr<UpdateHandler<T>> processor) {
         auto subscription = this->create_subscription<T>(
             processor->topic(), processor->queue_depth(),
             [processor](const std::shared_ptr<T> msg) {
