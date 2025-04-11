@@ -16,15 +16,23 @@ public:
     explicit DecisionBase(uint selfId, std::string nodeName, const rclcpp::NodeOptions& options);
 
 protected:
-    void nav_to_point(const double& x, const double& y, bool instant = true);
-    void nav_to_point(const PlaneCoordinate& targetPoint, bool instant = true);
-    void nav_to_pose(const PoseStamped& stampedPose, bool instant);
-    PlaneCoordinate get_current_coordinate();
+    void nav_to_point(const double& x, const double& y, bool instant = true) const;
 
-    void rotate_to_vec(const PlaneCoordinate& vec);
-    void rotate_to_angle(const double& targetAngle);
-    void set_angular_velocity(const double& angularV);
-    double get_current_angle();
+    void nav_to_point(const PlaneCoordinate& targetPoint, bool instant = true) const;
+    
+    void nav_to_pose(const PoseStamped& stampedPose, bool instant) const;
+
+    PlaneCoordinate get_current_coordinate() const;
+
+    void rotate_to_vec(const PlaneCoordinate& vec) const;
+
+    void rotate_to_angle(const double& targetAngle) const;
+
+    void set_angular_velocity(const double& angularV) const;
+    
+    double get_current_angle() const;
+
+    virtual void test_response(const std::string& instruction, const std::vector<float>& args) const = 0;
 
     Chessboard chessboard_;
     Prism prism_;
@@ -43,7 +51,7 @@ private:
 
     void prism_sub_callback(const iw_interfaces::msg::Prism::SharedPtr msg);
 
-    virtual void test_callback(const test_taker_interfaces::msg::TestArgs::SharedPtr msg) const = 0;
+    void test_callback(const test_taker_interfaces::msg::TestArgs::SharedPtr msg);
 };
 
 }  // namespace RMDecision

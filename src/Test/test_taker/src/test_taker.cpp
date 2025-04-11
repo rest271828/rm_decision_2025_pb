@@ -10,7 +10,7 @@
 
 class TestTaker : public rclcpp::Node {
 public:
-    TestTaker() : Node("terminal_listener") {
+    TestTaker() : Node("test_taker") {
         test_pub_ = this->create_publisher<test_taker_interfaces::msg::TestArgs>("test_command", 10);
     }
 

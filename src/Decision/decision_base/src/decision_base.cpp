@@ -34,11 +34,15 @@ void DecisionBase::prism_sub_callback(const iw_interfaces::msg::Prism::SharedPtr
     prism_.update_from_message(*msg);
 }
 
-void DecisionBase::nav_to_point(const double& x, const double& y, bool instant) {
+void DecisionBase::test_callback(const test_taker_interfaces::msg::TestArgs::SharedPtr msg) {
+    test_response(msg->instruction, msg->args);
+}
+
+void DecisionBase::nav_to_point(const double& x, const double& y, bool instant) const {
     nav_to_point(PlaneCoordinate(x, y), instant);
 }
 
-void DecisionBase::nav_to_point(const PlaneCoordinate& targetPoint, bool instant) {
+void DecisionBase::nav_to_point(const PlaneCoordinate& targetPoint, bool instant) const {
     navigator_interfaces::msg::Navigate msg;
     msg.pose.header.stamp = this->now();
     msg.pose.header.frame_id = "map";
@@ -52,23 +56,23 @@ void DecisionBase::nav_to_point(const PlaneCoordinate& targetPoint, bool instant
     nav_pub_->publish(msg);
 }
 
-void DecisionBase::nav_to_pose(const PoseStamped& stampedPose, bool instant) {
+void DecisionBase::nav_to_pose(const PoseStamped& stampedPose, bool instant) const {
     navigator_interfaces::msg::Navigate msg;
     msg.pose = stampedPose;
     msg.instant = instant;
     nav_pub_->publish(msg);
 }
 
-PlaneCoordinate DecisionBase::get_current_coordinate() {
+PlaneCoordinate DecisionBase::get_current_coordinate() const {
     return PlaneCoordinate(prism_.self->pose);
 }
 
-void DecisionBase::rotate_to_vec(const PlaneCoordinate& vec) {
+void DecisionBase::rotate_to_vec(const PlaneCoordinate& vec) const {
     double angle = std::atan2(vec.y, vec.x);
     rotate_to_angle(angle);
 }
 
-void DecisionBase::rotate_to_angle(const double& targetAngle) {
+void DecisionBase::rotate_to_angle(const double& targetAngle) const {
     const double KP = 1.0;
     const double KI = 0.01;
     const double KD = 0.1;
@@ -111,13 +115,13 @@ void DecisionBase::rotate_to_angle(const double& targetAngle) {
     }
 }
 
-void DecisionBase::set_angular_velocity(const double& angularV) {
+void DecisionBase::set_angular_velocity(const double& angularV) const {
     std_msgs::msg::Float32 msg;
     msg.data = angularV;
     angle_pub_->publish(msg);
 }
 
-double DecisionBase::get_current_angle() {
+double DecisionBase::get_current_angle() const {
     double w = prism_.self->pose.pose.orientation.w;
     double x = prism_.self->pose.pose.orientation.x;
     double y = prism_.self->pose.pose.orientation.y;
