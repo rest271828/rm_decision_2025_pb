@@ -37,13 +37,21 @@ public:
     void pose_callback(const geometry_msgs::msg::PoseStamped::SharedPtr msg) {
         current_coordinate_.x = msg->pose.position.x;
         current_coordinate_.y = msg->pose.position.y;
+
+        double w = msg->pose.orientation.w;
+        double x = msg->pose.orientation.x;
+        double y = msg->pose.orientation.y;
+        double z = msg->pose.orientation.z;
+
+        current_coordinate_.yaw = std::atan2(2 * (w * z + x * y), 1 - 2 * (x * x + z * z));
     }
 
     void log(const std::string& label) {
         log_file_.open(log_file_path_, std::ios::app);
         if (log_file_.is_open()) {
             log_file_ << label << ": (" << std::fixed << std::setprecision(3)
-                      << current_coordinate_.x << ", " << current_coordinate_.y << ")" << std::endl;
+                      << current_coordinate_.x << ", " << current_coordinate_.y << ") " 
+                      << "<" << current_coordinate_.yaw << ">" << std::endl;
             log_file_.close();
             RCLCPP_INFO(this->get_logger(), "Coordinate marked: (%.3f, %.3f)", current_coordinate_.x, current_coordinate_.y);
         } else {
@@ -60,6 +68,7 @@ private:
     struct Coordinate {
         double x;
         double y;
+        double yaw;
     } current_coordinate_;
 };
 
