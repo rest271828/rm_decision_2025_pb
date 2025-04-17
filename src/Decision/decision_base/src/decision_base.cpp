@@ -73,9 +73,9 @@ void DecisionBase::rotate_to_vec(const PlaneCoordinate& vec) const {
 }
 
 void DecisionBase::rotate_to_angle(const double& targetAngle) const {
-    const double KP = 1.0;
-    const double KI = 0.01;
-    const double KD = 0.1;
+    const double KP = 0.8;
+    const double KI = 0.03;
+    const double KD = 0.001;
 
     const double TOLARANCE = 0.01;
     const double RATE = 20;
@@ -99,16 +99,16 @@ void DecisionBase::rotate_to_angle(const double& targetAngle) const {
             break;
         }
 
-        if (error > 180.0) {
-            error -= 360.0;
-        } else if (error < -180.0) {
-            error += 360.0;
+        if (error > PI) {
+            error -= 2 * PI;
+        } else if (error < -PI) {
+            error += 2 * PI;
         }
 
         integral += error * deltaTime;
         double derivative = (error - previousError) / deltaTime;
 
-        double angularV = KP * error + KI * integral + KD * derivative;
+        double angularV = -(KP * error + KI * integral + KD * derivative);
         set_angular_velocity(angularV);
 
         previousError = error;
