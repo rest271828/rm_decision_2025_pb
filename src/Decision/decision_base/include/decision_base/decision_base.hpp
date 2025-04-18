@@ -24,14 +24,14 @@ protected:
     
     void nav_to_pose(const PoseStamped& stampedPose, bool instant) const;
 
-    PlaneCoordinate get_current_coordinate() const;
-
     void rotate_to_vec(const PlaneCoordinate& vec) const;
 
     void rotate_to_angle(const double& targetAngle) const;
 
     void set_angular_velocity(const double& angularV) const;
     
+    PlaneCoordinate get_current_coordinate() const;
+
     double get_current_angle() const;
 
     virtual void test_response(const std::string& instruction, const std::vector<float>& args) const = 0;

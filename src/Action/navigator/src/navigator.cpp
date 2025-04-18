@@ -9,6 +9,9 @@ Navigator::Navigator(const rclcpp::NodeOptions& options) : Node("navigator", opt
 
     nav_msg_sub_ = this->create_subscription<navigator_interfaces::msg::Navigate>(
         "to_navigator", 10, std::bind(&Navigator::nav_callback, this, std::placeholders::_1), sub_opt);
+    vel_msg_sub_ = this->create_subscription<std_msgs::msg::Float32MultiArray>(
+        "nav_vel", 10, std::bind(&Navigator::vel_callback, this, std::placeholders::_1), sub_opt);
+
     current_pose_pub_ = this->create_publisher<geometry_msgs::msg::PoseStamped>("navigator/current_pose", 10);
 
     nav_to_pose_client_ = rclcpp_action::create_client<nav2_msgs::action::NavigateToPose>(this, "navigate_to_pose", callback_group_);
@@ -82,7 +85,7 @@ void Navigator::result_callback(
 
 void Navigator::nav_callback(const navigator_interfaces::msg::Navigate::SharedPtr msg) {
     if (msg->instant) {
-        // nav_cancel();  // 该功能的实现有点问题，现阶段暂时注释掉
+        nav_cancel();
     }
     nav_to_pose(msg->pose);
 }
@@ -113,7 +116,7 @@ void Navigator::get_current_pose() {
             "map", "chassis",
             tf2::TimePointZero);
     } catch (const tf2::TransformException& ex) {
-        RCLCPP_INFO(
+        RCLCPP_WARN(
             this->get_logger(), "Could not transform : %s",
             ex.what());
         return;
