@@ -21,6 +21,7 @@ DecisionBase::DecisionBase(uint selfId, std::string nodeName, const rclcpp::Node
         std::bind(&DecisionBase::test_callback, this, std::placeholders::_1), subOpt);
 
     nav_pub_ = this->create_publisher<navigator_interfaces::msg::Navigate>("to_navigator", 10, pubOpt);
+    nav_vel_pub_ = this->create_publisher<std_msgs::msg::Float32MultiArray>("nav_vel", 10, pubOpt);
     angle_pub_ = this->create_publisher<std_msgs::msg::Float32>("to_rotator", 10, pubOpt);
 }
 
@@ -117,6 +118,55 @@ void DecisionBase::rotate_to_angle(const double& targetAngle) const {
 
         rclcpp::Rate(RATE).sleep();
     }
+}
+
+void DecisionBase::move_to_point(const PlaneCoordinate& targerPoint) const {
+    const double KP = 0.8;
+    const double KI = 0.03;
+    const double KD = 0.001;
+
+    const double TOLARANCE = 0.01;
+    const double RATE = 100;
+    const double TIME_LIMIT = 60; // 单位：秒
+
+    auto previousError = PlaneCoordinate(0.0, 0.0);  // 上一次的误差
+    auto integral = PlaneCoordinate(0.0, 0.0);       // 误差的积分项
+    rclcpp::Time start_time = this->now();
+    rclcpp::Time lastTime = start_time;
+
+    while (rclcpp::ok()) {
+        auto currentTime = this->now();
+        double deltaTime = (currentTime - lastTime).seconds();  // 动态计算时间间隔
+        lastTime = currentTime;
+
+        PlaneCoordinate currentCoordinate = get_current_coordinate();
+        RCLCPP_INFO(this->get_logger(), "Current coordinate: (%.3f, %.3f)", currentCoordinate.x, currentCoordinate.y);
+        PlaneCoordinate error = targerPoint - currentCoordinate;
+
+        RCLCPP_INFO(this->get_logger(), "Error value: (%.3f, %.3f)", error.x, error.y);
+
+        if (currentCoordinate.coincide_with(targerPoint, TOLARANCE) || (this->now() - start_time).seconds() > TIME_LIMIT) {
+            set_linear_velocity(PlaneCoordinate(0.0, 0.0));
+            break;
+        }
+
+        integral += error * deltaTime;
+        PlaneCoordinate derivative = (error - previousError) / deltaTime;
+
+        PlaneCoordinate linearV = - (KP * error + KI * integral + KD * derivative);
+        set_linear_velocity(linearV);
+
+        previousError = error;
+
+        rclcpp::Rate(RATE).sleep();
+    }
+}
+
+void DecisionBase::set_linear_velocity(const PlaneCoordinate& vec) const {
+    std_msgs::msg::Float32MultiArray msg;
+    msg.data.push_back(vec.x);
+    msg.data.push_back(vec.y);
+    nav_vel_pub_->publish(msg);
 }
 
 void DecisionBase::set_angular_velocity(const double& angularV) const {

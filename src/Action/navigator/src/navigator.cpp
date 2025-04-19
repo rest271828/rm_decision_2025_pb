@@ -13,6 +13,7 @@ Navigator::Navigator(const rclcpp::NodeOptions& options) : Node("navigator", opt
         "nav_vel", 10, std::bind(&Navigator::vel_callback, this, std::placeholders::_1), sub_opt);
 
     current_pose_pub_ = this->create_publisher<geometry_msgs::msg::PoseStamped>("navigator/current_pose", 10);
+    vel_pub_ = this->create_publisher<geometry_msgs::msg::Twist>("cmd_vel", 10);
 
     nav_to_pose_client_ = rclcpp_action::create_client<nav2_msgs::action::NavigateToPose>(this, "navigate_to_pose", callback_group_);
     send_goal_options_.goal_response_callback = std::bind(&Navigator::goal_response_callback, this,
@@ -90,9 +91,23 @@ void Navigator::nav_callback(const navigator_interfaces::msg::Navigate::SharedPt
     nav_to_pose(msg->pose);
 }
 
-void Navigator::timer_callback() {
-    get_current_pose();
+void Navigator::vel_callback(const std_msgs::msg::Float32MultiArray::SharedPtr msg) {
+    if (msg->data.size() != 2) {
+        return;
+    }
+    geometry_msgs::msg::Twist cmd;
+    cmd.linear.x = msg->data[0];
+    cmd.linear.y = msg->data[1];
+    cmd.linear.z = 0;
+    cmd.angular.x = 0;
+    cmd.angular.y = 0;
+    cmd.angular.z = 0;
+    vel_pub_->publish(cmd);
 }
+
+    void Navigator::timer_callback() {
+        get_current_pose();
+    }
 
 void Navigator::nav_to_pose(const geometry_msgs::msg::PoseStamped& msg) {
     RCLCPP_INFO(this->get_logger(), "Received goal point: (%.3f, %.3f)", msg.pose.position.x, msg.pose.position.y);
