@@ -9,6 +9,7 @@
 #include "navigator_interfaces/msg/navigate.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/float32.hpp"
+#include "std_msgs/msg/float32_multi_array.hpp"
 
 namespace RMDecision {
 class DecisionBase : public rclcpp::Node {
@@ -24,9 +25,13 @@ protected:
     
     void nav_to_pose(const PoseStamped& stampedPose, bool instant) const;
 
+    void move_to_point(const PlaneCoordinate& targetPoint) const;
+
     void rotate_to_vec(const PlaneCoordinate& vec) const;
 
     void rotate_to_angle(const double& targetAngle) const;
+
+    void set_linear_velocity(const PlaneCoordinate& vec) const;
 
     void set_angular_velocity(const double& angularV) const;
     
@@ -45,6 +50,7 @@ private:
     rclcpp::Subscription<test_taker_interfaces::msg::TestArgs>::SharedPtr test_args_sub_;
 
     rclcpp::Publisher<navigator_interfaces::msg::Navigate>::SharedPtr nav_pub_;
+    rclcpp::Publisher<std_msgs::msg::Float32MultiArray>::SharedPtr nav_vel_pub_;
     rclcpp::Publisher<std_msgs::msg::Float32>::SharedPtr angle_pub_;
 
     rclcpp::CallbackGroup::SharedPtr callback_group_;

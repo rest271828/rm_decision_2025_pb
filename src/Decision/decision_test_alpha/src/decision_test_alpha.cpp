@@ -13,12 +13,16 @@ void DecisionTestAlpha::pose_sub_callback(const geometry_msgs::msg::PoseStamped:
 void DecisionTestAlpha::test_response(const std::string& instruction, const std::vector<float>& args) const {
     enum Inst { NAV,
                 ROT,
-                SAV };
+                SAV,
+                SLV,
+                MOV};
 
     const std::unordered_map<std::string, Inst> convert = {
         {"NAV", NAV},
         {"ROT", ROT},
-        {"SAV", SAV}};
+        {"SAV", SAV},
+        {"SLV", SLV},
+        {"MOV", MOV}};
 
     auto it = convert.find(instruction);
     if (it == convert.end()) {
@@ -45,6 +49,20 @@ void DecisionTestAlpha::test_response(const std::string& instruction, const std:
         if(args.size() == 1) {
             RCLCPP_INFO(this->get_logger(), "set_angular_velocity: %.3f", args[0]);
             set_angular_velocity(args[0]);
+        }
+        break;
+
+    case SLV:
+        if(args.size() == 2) {
+            RCLCPP_INFO(this->get_logger(), "set_linear_velocity: (%.3f, %.3f)", args[0], args[1]);
+            set_linear_velocity(RMDecision::PlaneCoordinate(args[0], args[1]));
+        }
+        break;
+
+    case MOV:
+        if(args.size() == 2) {
+            RCLCPP_INFO(this->get_logger(), "move_to_point: (%.3f, %.3f)", args[0], args[1]);
+            move_to_point(RMDecision::PlaneCoordinate(args[0], args[1]));
         }
         break;
 
