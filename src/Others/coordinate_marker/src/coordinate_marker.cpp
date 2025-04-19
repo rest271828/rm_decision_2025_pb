@@ -9,7 +9,7 @@
 #include "geometry_msgs/msg/pose_stamped.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include "sensor_msgs/msg/laser_scan.hpp"
-
+#include "scan_record/scan_record.hpp"
 
 
 class CoordinateMarker : public rclcpp::Node {
@@ -47,14 +47,14 @@ public:
     }
 
     void log(const std::string& label) {
-        std::ostringstream record;
-        record << "(" << std::fixed << std::setprecision(3)
+        std::ostringstream coordinate_ss;
+        coordinate_ss << "(" << std::fixed << std::setprecision(3)
                << current_coordinate_.x << ", " << current_coordinate_.y << ") "
                << "<" << current_coordinate_.yaw << ">" << std::endl;
 
         log_file_.open(log_file_path_, std::ios::app);
         if (log_file_.is_open()) {
-            log_file_ << label << ": " << record.str();
+            log_file_ << label << ": " << coordinate_ss.str();
             log_file_.close();
             RCLCPP_INFO(this->get_logger(), "Coordinate marked: (%.3f, %.3f)", current_coordinate_.x, current_coordinate_.y);
         } else {
@@ -62,18 +62,19 @@ public:
         }
 
         std::ostringstream filepath;
-        filepath << scan_folder_path_ << "/scan-" << label << "_" << record.str() << ".bin";
+        filepath << scan_folder_path_ << "/scan-" << label << "_" << coordinate_ss.str() << ".rcs";
         std::ofstream file(filepath.str(), std::ios::binary);
         if (!file) {
-            RCLCPP_ERROR(get_logger(), "Failed to open file: %s", filepath.c_str());
+            RCLCPP_ERROR(get_logger(), "Failed to open file: %s", filepath.str().c_str());
             return;
         }
-        uint32_t size = scan_ranges_.size();
-        file.write(reinterpret_cast<const char*>(&current_coordinate_.x), sizeof(current_coordinate_.x));
-        file.write(reinterpret_cast<const char*>(&current_coordinate_.y), sizeof(current_coordinate_.y));
-        file.write(reinterpret_cast<const char*>(&current_coordinate_.yaw), sizeof(current_coordinate_.yaw));
-        file.write(reinterpret_cast<const char*>(&size), sizeof(size));
-        file.write(reinterpret_cast<const char*>(scan_ranges_.data()), size * sizeof(float));
+
+        ScanRecord record;
+        record.coordinate.x = current_coordinate_.x;
+        record.coordinate.y = current_coordinate_.y;
+        record.coordinate.yaw = current_coordinate_.yaw;
+        record.ranges = scan_ranges_;
+        record.save_to(filepath.str());
     }
 
 private:
