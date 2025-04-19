@@ -9,20 +9,18 @@ DecisionTestAlpha::DecisionTestAlpha(const rclcpp::NodeOptions& options)
 void DecisionTestAlpha::pose_sub_callback(const geometry_msgs::msg::PoseStamped::SharedPtr msg) {
     prism_.self->pose = *msg;
 }
- 
+
 void DecisionTestAlpha::test_response(const std::string& instruction, const std::vector<float>& args) const {
-    enum Inst { NAV,
-                ROT,
-                SAV,
-                SLV,
-                MOV};
+    enum Inst { NAV, ROT, SAV, SLV, MOV, GCP, GCA };
 
     const std::unordered_map<std::string, Inst> convert = {
         {"NAV", NAV},
         {"ROT", ROT},
         {"SAV", SAV},
         {"SLV", SLV},
-        {"MOV", MOV}};
+        {"MOV", MOV},
+        {"GCP", GCP},
+        {"GCA", GCA}};
 
     auto it = convert.find(instruction);
     if (it == convert.end()) {
@@ -30,39 +28,51 @@ void DecisionTestAlpha::test_response(const std::string& instruction, const std:
     }
 
     switch (it->second) {
-
     case NAV:
-        if(args.size() == 2) {
+        if (args.size() == 2) {
             RCLCPP_INFO(this->get_logger(), "nav_to_point: (%.3f, %.3f)", args[0], args[1]);
             nav_to_point(args[0], args[1]);
         }
         break;
 
     case ROT:
-        if(args.size() == 1) {
+        if (args.size() == 1) {
             RCLCPP_INFO(this->get_logger(), "rotate_to_angle: %.3f", args[0]);
             rotate_to_angle(args[0]);
         }
         break;
 
     case SAV:
-        if(args.size() == 1) {
+        if (args.size() == 1) {
             RCLCPP_INFO(this->get_logger(), "set_angular_velocity: %.3f", args[0]);
             set_angular_velocity(args[0]);
         }
         break;
 
     case SLV:
-        if(args.size() == 2) {
+        if (args.size() == 2) {
             RCLCPP_INFO(this->get_logger(), "set_linear_velocity: (%.3f, %.3f)", args[0], args[1]);
             set_linear_velocity(RMDecision::PlaneCoordinate(args[0], args[1]));
         }
         break;
 
     case MOV:
-        if(args.size() == 2) {
+        if (args.size() == 2) {
             RCLCPP_INFO(this->get_logger(), "move_to_point: (%.3f, %.3f)", args[0], args[1]);
             move_to_point(RMDecision::PlaneCoordinate(args[0], args[1]));
+        }
+        break;
+
+    case GCP:
+        if (args.size() == 0) {
+            auto currentPoint = get_current_coordinate();
+            RCLCPP_INFO(this->get_logger(), "get_current_point: (%.3f, %.3f)", currentPoint.x, currentPoint.y);
+        }
+        break;
+
+    case GCA:
+        if (args.size() == 0) {
+            RCLCPP_INFO(this->get_logger(), "get_current_angle: %.3f", get_current_angle());
         }
         break;
 
