@@ -10,6 +10,8 @@
 #include "rclcpp/rclcpp.hpp"
 #include "sensor_msgs/msg/laser_scan.hpp"
 
+
+
 class CoordinateMarker : public rclcpp::Node {
 public:
     CoordinateMarker() : Node("coordinate_marker") {
@@ -45,24 +47,31 @@ public:
     }
 
     void log(const std::string& label) {
+        std::ostringstream record;
+        record << "(" << std::fixed << std::setprecision(3)
+               << current_coordinate_.x << ", " << current_coordinate_.y << ") "
+               << "<" << current_coordinate_.yaw << ">" << std::endl;
+
         log_file_.open(log_file_path_, std::ios::app);
         if (log_file_.is_open()) {
-            log_file_ << label << ": (" << std::fixed << std::setprecision(3)
-                      << current_coordinate_.x << ", " << current_coordinate_.y << ") "
-                      << "<" << current_coordinate_.yaw << ">" << std::endl;
+            log_file_ << label << ": " << record.str();
             log_file_.close();
             RCLCPP_INFO(this->get_logger(), "Coordinate marked: (%.3f, %.3f)", current_coordinate_.x, current_coordinate_.y);
         } else {
             RCLCPP_ERROR(this->get_logger(), "Failed to open file: %s", log_file_path_.c_str());
         }
 
-        std::string filepath = scan_folder_path_ + "/scan-" + label + "_(" + log_time_ + ").bin";
-        std::ofstream file(filepath, std::ios::binary);
+        std::ostringstream filepath;
+        filepath << scan_folder_path_ << "/scan-" << label << "_" << record.str() << ".bin";
+        std::ofstream file(filepath.str(), std::ios::binary);
         if (!file) {
             RCLCPP_ERROR(get_logger(), "Failed to open file: %s", filepath.c_str());
             return;
         }
         uint32_t size = scan_ranges_.size();
+        file.write(reinterpret_cast<const char*>(&current_coordinate_.x), sizeof(current_coordinate_.x));
+        file.write(reinterpret_cast<const char*>(&current_coordinate_.y), sizeof(current_coordinate_.y));
+        file.write(reinterpret_cast<const char*>(&current_coordinate_.yaw), sizeof(current_coordinate_.yaw));
         file.write(reinterpret_cast<const char*>(&size), sizeof(size));
         file.write(reinterpret_cast<const char*>(scan_ranges_.data()), size * sizeof(float));
     }
@@ -82,6 +91,12 @@ private:
 
     void scan_callback(const sensor_msgs::msg::LaserScan::SharedPtr msg) {
         scan_ranges_ = msg->ranges;
+    }
+
+    std::string double_to_string(double value, int precision) {
+        std::ostringstream stream;
+        stream << std::fixed << std::setprecision(precision) << value;
+        return stream.str();
     }
 
     rclcpp::Subscription<geometry_msgs::msg::PoseStamped>::SharedPtr pose_sub_;
