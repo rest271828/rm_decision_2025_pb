@@ -120,7 +120,7 @@ void DecisionBase::rotate_to_angle(const double& targetAngle) const {
     }
 }
 
-void DecisionBase::move_to_point(const PlaneCoordinate& targerPoint) const {
+void DecisionBase::move_to_point(const PlaneCoordinate& targetPoint) const {
     const double KP = 0.8;
     const double KI = 0.03;
     const double KD = 0.001;
@@ -141,11 +141,11 @@ void DecisionBase::move_to_point(const PlaneCoordinate& targerPoint) const {
 
         PlaneCoordinate currentCoordinate = get_current_coordinate();
         RCLCPP_INFO(this->get_logger(), "Current coordinate: (%.3f, %.3f)", currentCoordinate.x, currentCoordinate.y);
-        PlaneCoordinate error = targerPoint - currentCoordinate;
+        PlaneCoordinate error = targetPoint - currentCoordinate;
 
         RCLCPP_INFO(this->get_logger(), "Error value: (%.3f, %.3f)", error.x, error.y);
 
-        if (currentCoordinate.coincide_with(targerPoint, TOLARANCE) || (this->now() - start_time).seconds() > TIME_LIMIT) {
+        if (currentCoordinate.coincide_with(targetPoint, TOLARANCE) || (this->now() - start_time).seconds() > TIME_LIMIT) {
             set_linear_velocity(PlaneCoordinate(0.0, 0.0));
             break;
         }
