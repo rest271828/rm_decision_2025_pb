@@ -122,12 +122,12 @@ void DecisionBase::rotate_to_angle(const double& targetAngle) const {
 
 void DecisionBase::move_to_point(const PlaneCoordinate& targetPoint) const {
     const double KP = 0.8;
-    const double KI = 0.03;
+    const double KI = 0.08;
     const double KD = 0.001;
 
-    const double TOLARANCE = 0.01;
+    const double TOLARANCE = 0.05;
     const double RATE = 100;
-    const double TIME_LIMIT = 60; // 单位：秒
+    const double TIME_LIMIT = 20; // 单位：秒
 
     auto previousError = PlaneCoordinate(0.0, 0.0);  // 上一次的误差
     auto integral = PlaneCoordinate(0.0, 0.0);       // 误差的积分项
@@ -153,7 +153,10 @@ void DecisionBase::move_to_point(const PlaneCoordinate& targetPoint) const {
         integral += error * deltaTime;
         PlaneCoordinate derivative = (error - previousError) / deltaTime;
 
-        PlaneCoordinate linearV = - (KP * error + KI * integral + KD * derivative);
+        PlaneCoordinate mapV = - (KP * error + KI * integral + KD * derivative);
+        double theta = get_current_angle();
+        PlaneCoordinate linearV = PlaneCoordinate(
+            mapV.x * cos(theta) + mapV.y * sin(theta), mapV.x * sin(theta) + mapV.y * cos(theta));
         set_linear_velocity(linearV);
 
         previousError = error;
