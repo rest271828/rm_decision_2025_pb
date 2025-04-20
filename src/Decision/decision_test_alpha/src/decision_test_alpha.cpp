@@ -63,14 +63,16 @@ void DecisionTestAlpha::test_response(const std::string& instruction, const std:
         }
         break;
 
-    case GCP:
+    case GCP: {
         auto currentPoint = get_current_coordinate();
         RCLCPP_INFO(this->get_logger(), "get_current_point: (%.3f, %.3f)", currentPoint.x, currentPoint.y);
         break;
+    }
 
-    case GCA:
+    case GCA: {
         RCLCPP_INFO(this->get_logger(), "get_current_angle: %.3f", get_current_angle());
         break;
+    }
 
     default:
         break;

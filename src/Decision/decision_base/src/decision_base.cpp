@@ -111,7 +111,7 @@ void DecisionBase::rotate_to_angle(const double& targetAngle) const {
         integral += error * deltaTime;
         double derivative = (error - previousError) / deltaTime;
 
-        double angularV = - (KP * error + KI * integral + KD * derivative);
+        double angularV = KP * error + KI * integral + KD * derivative;
         set_angular_velocity(angularV);
 
         previousError = error;
@@ -122,10 +122,10 @@ void DecisionBase::rotate_to_angle(const double& targetAngle) const {
 
 void DecisionBase::move_to_point(const PlaneCoordinate& targetPoint) const {
     const double KP = 0.8;
-    const double KI = 0.08;
+    const double KI = 0.03;
     const double KD = 0.001;
 
-    const double TOLARANCE = 0.05;
+    const double TOLARANCE = 0.07;
     const double RATE = 100;
     const double TIME_LIMIT = 20; // 单位：秒
 
@@ -153,10 +153,11 @@ void DecisionBase::move_to_point(const PlaneCoordinate& targetPoint) const {
         integral += error * deltaTime;
         PlaneCoordinate derivative = (error - previousError) / deltaTime;
 
-        PlaneCoordinate mapV = - (KP * error + KI * integral + KD * derivative);
+        PlaneCoordinate mapV = KP * error + KI * integral + KD * derivative;
         double theta = get_current_angle();
+        RCLCPP_INFO(this->get_logger(), "%.3f", theta);
         PlaneCoordinate linearV = PlaneCoordinate(
-            mapV.x * cos(theta) + mapV.y * sin(theta), mapV.x * sin(theta) + mapV.y * cos(theta));
+            mapV.x * cos(theta) + mapV.y * sin(theta), -mapV.x * sin(theta) + mapV.y * cos(theta));
         set_linear_velocity(linearV);
 
         previousError = error;
