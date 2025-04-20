@@ -15,7 +15,7 @@ public:
         T derivative = (error - previous_error_) / deltaTime;
         previous_error_ = error;
 
-        return -(KP_ * error + KI_ * integral_ + KD_ * derivative);
+        return KP_ * error + KI_ * integral_ + KD_ * derivative;
     }
 
     void set_target(const T& target) {
