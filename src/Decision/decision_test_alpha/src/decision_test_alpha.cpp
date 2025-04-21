@@ -11,7 +11,13 @@ void DecisionTestAlpha::pose_sub_callback(const geometry_msgs::msg::PoseStamped:
 }
 
 void DecisionTestAlpha::test_response(const std::string& instruction, const std::vector<float>& args) const {
-    enum Inst { NAV, ROT, SAV, SLV, MOV, GCP, GCA };
+    enum Inst { NAV,
+                ROT,
+                SAV,
+                SLV,
+                MOV,
+                GCP,
+                GCA };
 
     const std::unordered_map<std::string, Inst> convert = {
         {"NAV", NAV},
@@ -58,7 +64,7 @@ void DecisionTestAlpha::test_response(const std::string& instruction, const std:
 
     case MOV:
         if (args.size() == 2) {
-            test_display("move_to_point: (%.3f, %.3f)", args[0], args[1]);
+            test_display("Moving to point: (%.3f, %.3f)", args[0], args[1]);
             move_to_point(RMDecision::PlaneCoordinate(args[0], args[1]));
         }
         break;
