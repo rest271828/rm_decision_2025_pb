@@ -1,3 +1,5 @@
+#pragma once
+
 #include "decision_base/decision_base.hpp"
 
 namespace RMDecision{

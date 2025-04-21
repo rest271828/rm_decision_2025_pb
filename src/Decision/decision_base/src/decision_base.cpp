@@ -23,6 +23,7 @@ DecisionBase::DecisionBase(uint selfId, std::string nodeName, const rclcpp::Node
     nav_pub_ = this->create_publisher<navigator_interfaces::msg::Navigate>("to_navigator", 10, pubOpt);
     nav_vel_pub_ = this->create_publisher<std_msgs::msg::Float32MultiArray>("nav_vel", 10, pubOpt);
     angle_pub_ = this->create_publisher<std_msgs::msg::Float32>("to_rotator", 10, pubOpt);
+    test_feedback_pub_ = this->create_publisher<std_msgs::msg::String>("test_feedback", 10, pubOpt);
 }
 
 void DecisionBase::chessboard_sub_callback(const iw_interfaces::msg::Chessboard::SharedPtr msg) {
@@ -89,4 +90,20 @@ double DecisionBase::get_current_angle() const {
 
     double yaw = std::atan2(2 * (w * z + x * y), 1 - 2 * (x * x + z * z));
     return yaw;
+}
+
+void DecisionBase::test_display(const char* format, ...) const {
+    const int BUFFER_SIZE = 512;
+    char buffer[BUFFER_SIZE];
+
+    va_list args;
+    va_start(args, format);
+    std::vsnprintf(buffer, sizeof(buffer), format, args);
+    va_end(args);
+
+    RCLCPP_INFO(this->get_logger(), "%s", buffer);
+
+    auto message = std_msgs::msg::String();
+    message.data = std::string(buffer);
+    test_feedback_pub_->publish(message);
 }
