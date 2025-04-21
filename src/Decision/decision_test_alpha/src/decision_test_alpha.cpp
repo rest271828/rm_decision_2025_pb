@@ -1,7 +1,7 @@
 #include "decision_test_alpha/decision_test_alpha.hpp"
 
 DecisionTestAlpha::DecisionTestAlpha(const rclcpp::NodeOptions& options)
-    : DecisionBase(7, "decision_test_alpha", options) {
+    : RMDecision::DecisionBeta(7, "decision_test_alpha", options) {
     pose_sub_ = this->create_subscription<geometry_msgs::msg::PoseStamped>(
         "navigator/current_pose", 10, std::bind(&DecisionTestAlpha::pose_sub_callback, this, std::placeholders::_1));
 }
@@ -63,18 +63,16 @@ void DecisionTestAlpha::test_response(const std::string& instruction, const std:
         }
         break;
 
-    case GCP:
-        if (args.size() == 0) {
-            auto currentPoint = get_current_coordinate();
-            RCLCPP_INFO(this->get_logger(), "get_current_point: (%.3f, %.3f)", currentPoint.x, currentPoint.y);
-        }
+    case GCP: {
+        auto currentPoint = get_current_coordinate();
+        RCLCPP_INFO(this->get_logger(), "get_current_point: (%.3f, %.3f)", currentPoint.x, currentPoint.y);
         break;
+    }
 
-    case GCA:
-        if (args.size() == 0) {
-            RCLCPP_INFO(this->get_logger(), "get_current_angle: %.3f", get_current_angle());
-        }
+    case GCA: {
+        RCLCPP_INFO(this->get_logger(), "get_current_angle: %.3f", get_current_angle());
         break;
+    }
 
     default:
         break;

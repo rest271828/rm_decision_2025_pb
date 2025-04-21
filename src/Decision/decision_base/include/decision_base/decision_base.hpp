@@ -25,12 +25,6 @@ protected:
     
     void nav_to_pose(const PoseStamped& stampedPose, bool instant) const;
 
-    void move_to_point(const PlaneCoordinate& targetPoint) const;
-
-    void rotate_to_vec(const PlaneCoordinate& vec) const;
-
-    void rotate_to_angle(const double& targetAngle) const;
-
     void set_linear_velocity(const PlaneCoordinate& vec) const;
 
     void set_angular_velocity(const double& angularV) const;
