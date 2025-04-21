@@ -30,47 +30,47 @@ void DecisionTestAlpha::test_response(const std::string& instruction, const std:
     switch (it->second) {
     case NAV:
         if (args.size() == 2) {
-            RCLCPP_INFO(this->get_logger(), "nav_to_point: (%.3f, %.3f)", args[0], args[1]);
+            test_display("Navigating to point: (%.3f, %.3f)", args[0], args[1]);
             nav_to_point(args[0], args[1]);
         }
         break;
 
     case ROT:
         if (args.size() == 1) {
-            RCLCPP_INFO(this->get_logger(), "rotate_to_angle: %.3f", args[0]);
+            test_display("Rotating to angle: %.3f", args[0]);
             rotate_to_angle(args[0]);
         }
         break;
 
     case SAV:
         if (args.size() == 1) {
-            RCLCPP_INFO(this->get_logger(), "set_angular_velocity: %.3f", args[0]);
+            test_display("Set angular velocity: %.3f", args[0]);
             set_angular_velocity(args[0]);
         }
         break;
 
     case SLV:
         if (args.size() == 2) {
-            RCLCPP_INFO(this->get_logger(), "set_linear_velocity: (%.3f, %.3f)", args[0], args[1]);
+            test_display("Set linear velocity: (%.3f, %.3f)", args[0], args[1]);
             set_linear_velocity(RMDecision::PlaneCoordinate(args[0], args[1]));
         }
         break;
 
     case MOV:
         if (args.size() == 2) {
-            RCLCPP_INFO(this->get_logger(), "move_to_point: (%.3f, %.3f)", args[0], args[1]);
+            test_display("move_to_point: (%.3f, %.3f)", args[0], args[1]);
             move_to_point(RMDecision::PlaneCoordinate(args[0], args[1]));
         }
         break;
 
     case GCP: {
         auto currentPoint = get_current_coordinate();
-        RCLCPP_INFO(this->get_logger(), "get_current_point: (%.3f, %.3f)", currentPoint.x, currentPoint.y);
+        test_display("Current point: (%.3f, %.3f)", currentPoint.x, currentPoint.y);
         break;
     }
 
     case GCA: {
-        RCLCPP_INFO(this->get_logger(), "get_current_angle: %.3f", get_current_angle());
+        test_display("Current angle: %.3f", get_current_angle());
         break;
     }
 
