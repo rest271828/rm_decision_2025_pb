@@ -1,5 +1,8 @@
 #pragma once
 
+#include <cstdio>
+#include <cstdarg>
+
 #include "information_widgets/chessboard_def.hpp"
 #include "information_widgets/prism_def.hpp"
 #include "information_widgets/rm_decision_defs.hpp"
@@ -9,6 +12,8 @@
 #include "navigator_interfaces/msg/navigate.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/float32.hpp"
+#include "std_msgs/msg/float32_multi_array.hpp"
+#include "std_msgs/msg/string.hpp"
 
 namespace RMDecision {
 class DecisionBase : public rclcpp::Node {
@@ -24,15 +29,15 @@ protected:
     
     void nav_to_pose(const PoseStamped& stampedPose, bool instant) const;
 
-    PlaneCoordinate get_current_coordinate() const;
-
-    void rotate_to_vec(const PlaneCoordinate& vec) const;
-
-    void rotate_to_angle(const double& targetAngle) const;
+    void set_linear_velocity(const PlaneCoordinate& vec) const;
 
     void set_angular_velocity(const double& angularV) const;
     
+    PlaneCoordinate get_current_coordinate() const;
+
     double get_current_angle() const;
+
+    void test_display(const char* format, ...) const;
 
     virtual void test_response(const std::string& instruction, const std::vector<float>& args) const = 0;
 
@@ -45,7 +50,9 @@ private:
     rclcpp::Subscription<test_taker_interfaces::msg::TestArgs>::SharedPtr test_args_sub_;
 
     rclcpp::Publisher<navigator_interfaces::msg::Navigate>::SharedPtr nav_pub_;
+    rclcpp::Publisher<std_msgs::msg::Float32MultiArray>::SharedPtr nav_vel_pub_;
     rclcpp::Publisher<std_msgs::msg::Float32>::SharedPtr angle_pub_;
+    rclcpp::Publisher<std_msgs::msg::String>::SharedPtr test_feedback_pub_;
 
     rclcpp::CallbackGroup::SharedPtr callback_group_;
 

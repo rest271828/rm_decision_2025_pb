@@ -69,6 +69,10 @@ public:
         return PlaneCoordinate(x * scale, y * scale);
     }
 
+    inline PlaneCoordinate operator/(const double& divisor) const {
+        return PlaneCoordinate(x / divisor, y / divisor);
+    }
+
     inline void operator=(const PlaneCoordinate& another) {
         x = another.x;
         y = another.y;
@@ -134,6 +138,10 @@ public:
         return (*this * another == 0);
     }
 
+    inline bool coincide_with(const PlaneCoordinate& another, const double& tolerance) {
+        return (*this - another).norm() < tolerance;
+    }
+
     // 判断由点p1, p2连接的线段和由点p3, p4连接的线段是否相交
     static bool intersect(const PlaneCoordinate& p1, const PlaneCoordinate& p2, const PlaneCoordinate& p3, const PlaneCoordinate& p4) {
         double x1 = p1.x, x2 = p2.x, x3 = p3.x, x4 = p4.x;
@@ -167,6 +175,10 @@ public:
         return -(b1 - b2) / (k1 - k2);
     }
 };
+
+inline PlaneCoordinate operator*(const double& scale, const PlaneCoordinate& vec) {
+    return vec * scale;
+}
 
 class Object {
 public:

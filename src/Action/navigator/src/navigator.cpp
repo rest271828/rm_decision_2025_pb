@@ -9,7 +9,11 @@ Navigator::Navigator(const rclcpp::NodeOptions& options) : Node("navigator", opt
 
     nav_msg_sub_ = this->create_subscription<navigator_interfaces::msg::Navigate>(
         "to_navigator", 10, std::bind(&Navigator::nav_callback, this, std::placeholders::_1), sub_opt);
-    current_pose_pub_ = this->create_publisher<geometry_msgs::msg::PoseStamped>("navigator/current_pose", 10);
+    vel_msg_sub_ = this->create_subscription<std_msgs::msg::Float32MultiArray>(
+        "nav_vel", 10, std::bind(&Navigator::vel_callback, this, std::placeholders::_1), sub_opt);
+
+    current_pose_pub_ = this->create_publisher<geometry_msgs::msg::PoseStamped>("navigator/current_pose", 10, pub_opt);
+    vel_pub_ = this->create_publisher<geometry_msgs::msg::Twist>("cmd_vel", 10, pub_opt);
 
     nav_to_pose_client_ = rclcpp_action::create_client<nav2_msgs::action::NavigateToPose>(this, "navigate_to_pose", callback_group_);
     send_goal_options_.goal_response_callback = std::bind(&Navigator::goal_response_callback, this,
@@ -18,7 +22,7 @@ Navigator::Navigator(const rclcpp::NodeOptions& options) : Node("navigator", opt
                                                      std::placeholders::_2);
     send_goal_options_.result_callback = std::bind(&Navigator::result_callback, this, std::placeholders::_1);
 
-    timer_ = this->create_wall_timer(std::chrono::milliseconds(200), std::bind(&Navigator::timer_callback, this), callback_group_);
+    timer_ = this->create_wall_timer(std::chrono::milliseconds(10), std::bind(&Navigator::timer_callback, this), callback_group_);
 
     tf2_buffer_ = std::make_shared<tf2_ros::Buffer>(this->get_clock());
     tf2_listener_ = std::make_shared<tf2_ros::TransformListener>(*tf2_buffer_);
@@ -82,9 +86,23 @@ void Navigator::result_callback(
 
 void Navigator::nav_callback(const navigator_interfaces::msg::Navigate::SharedPtr msg) {
     if (msg->instant) {
-        // nav_cancel();  // 该功能的实现有点问题，现阶段暂时注释掉
+        nav_cancel();
     }
     nav_to_pose(msg->pose);
+}
+
+void Navigator::vel_callback(const std_msgs::msg::Float32MultiArray::SharedPtr msg) {
+    if (msg->data.size() != 2) {
+        return;
+    }
+    geometry_msgs::msg::Twist cmd;
+    cmd.linear.x = msg->data[0];
+    cmd.linear.y = msg->data[1];
+    cmd.linear.z = 0;
+    cmd.angular.x = 0;
+    cmd.angular.y = 0;
+    cmd.angular.z = 0;
+    vel_pub_->publish(cmd);
 }
 
 void Navigator::timer_callback() {
@@ -113,7 +131,7 @@ void Navigator::get_current_pose() {
             "map", "chassis",
             tf2::TimePointZero);
     } catch (const tf2::TransformException& ex) {
-        RCLCPP_INFO(
+        RCLCPP_WARN(
             this->get_logger(), "Could not transform : %s",
             ex.what());
         return;

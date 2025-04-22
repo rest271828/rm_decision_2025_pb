@@ -4,12 +4,14 @@
 #include <tf2_ros/transform_listener.h>
 
 #include "geometry_msgs/msg/pose.hpp"
+#include "geometry_msgs/msg/twist.hpp"
 #include "information_widgets/rm_decision_defs.hpp"
 #include "nav2_msgs/action/navigate_to_pose.hpp"
 #include "navigator_interfaces/msg/navigate.hpp"
 #include "rclcpp/publisher.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp_action/rclcpp_action.hpp"
+#include "std_msgs/msg/float32_multi_array.hpp"
 
 enum NavState {
     INIT,
@@ -25,7 +27,11 @@ public:
 
 private:
     rclcpp::Subscription<navigator_interfaces::msg::Navigate>::SharedPtr nav_msg_sub_;
+    rclcpp::Subscription<std_msgs::msg::Float32MultiArray>::SharedPtr vel_msg_sub_;
+
     rclcpp::Publisher<geometry_msgs::msg::PoseStamped>::SharedPtr current_pose_pub_;
+    rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr vel_pub_;
+
     rclcpp::TimerBase::SharedPtr timer_;
 
     rclcpp_action::Client<nav2_msgs::action::NavigateToPose>::SharedPtr nav_to_pose_client_;
@@ -44,6 +50,8 @@ private:
     bool available_;
 
     void nav_callback(const navigator_interfaces::msg::Navigate::SharedPtr msg);
+
+    void vel_callback(const std_msgs::msg::Float32MultiArray::SharedPtr msg);
 
     void goal_response_callback(
         rclcpp_action::ClientGoalHandle<nav2_msgs::action::NavigateToPose>::SharedPtr future);

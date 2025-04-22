@@ -10,7 +10,7 @@
   <buildtool_depend>ament_cmake</buildtool_depend>
 
   <depend>rclcpp</depend>
-  <depend>decision_base</depend>
+  <depend>decision_beta</depend>
   <depend>rm_decision_macros</depend>
 
   <test_depend>ament_lint_auto</test_depend>
