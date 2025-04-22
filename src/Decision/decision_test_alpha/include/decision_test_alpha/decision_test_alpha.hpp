@@ -1,6 +1,6 @@
-#include "decision_base/decision_base.hpp"
+#include "decision_beta/decision_beta.hpp"
 
-class DecisionTestAlpha : public RMDecision::DecisionBase {
+class DecisionTestAlpha : public RMDecision::DecisionBeta {
 public:
     explicit DecisionTestAlpha(const rclcpp::NodeOptions& options);
 

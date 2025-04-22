@@ -6,12 +6,15 @@
 #include <vector>
 
 #include "rclcpp/rclcpp.hpp"
+#include "std_msgs/msg/string.hpp"
 #include "test_taker_interfaces/msg/test_args.hpp"
 
 class TestTaker : public rclcpp::Node {
 public:
     TestTaker() : Node("test_taker") {
         test_pub_ = this->create_publisher<test_taker_interfaces::msg::TestArgs>("test_command", 10);
+        feedback_sub_ = this->create_subscription<std_msgs::msg::String>(
+            "test_feedback", 10, std::bind(&TestTaker::feedback_callback, this, std::placeholders::_1));
     }
 
     void set_input_param(const std::string& input) {
@@ -33,7 +36,12 @@ public:
     }
 
 private:
+    void feedback_callback(const std_msgs::msg::String::SharedPtr msg) const {
+        std::cout << "\r" << msg->data << std::flush;
+    }
+
     rclcpp::Publisher<test_taker_interfaces::msg::TestArgs>::SharedPtr test_pub_;
+    rclcpp::Subscription<std_msgs::msg::String>::SharedPtr feedback_sub_;
 };
 
 void read_input(rclcpp::Node::SharedPtr node) {
