@@ -98,3 +98,26 @@ void DecisionBeta::move_to_point(const PlaneCoordinate& targetPoint) const {
         rclcpp::Rate(RATE).sleep();
     }
 }
+
+void DecisionBeta::nav_to_point_serially(const PlaneCoordinate& targetPoint) const {
+    const double TOLARANCE = 0.07;
+    const double RATE = 100;
+    const double TIME_LIMIT = 20; // 单位：秒
+
+    rclcpp::Time start_time = this->now();
+
+    while (rclcpp::ok()) {
+        auto currentTime = this->now();
+        nav_to_point(targetPoint);
+        PlaneCoordinate currentCoordinate = get_current_coordinate();
+        if (currentCoordinate.coincide_with(targetPoint, TOLARANCE) || (this->now() - start_time).seconds() > TIME_LIMIT) {
+            set_linear_velocity(PlaneCoordinate(0.0, 0.0));
+            break;
+        }
+        rclcpp::Rate(RATE).sleep();
+    }
+}
+
+void DecisionBeta::nav_to_point_serially(const double& x, const double& y) const {
+    nav_to_point_serially(PlaneCoordinate(x, y));
+}
