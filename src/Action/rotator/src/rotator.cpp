@@ -14,7 +14,7 @@ void Rotator::angular_velocity_callback(const std_msgs::msg::Float32::SharedPtr 
     cmd.linear.z = 0;
     cmd.angular.x = 0;
     cmd.angular.y = 0;
-    cmd.angular.z = msg->data;
+    cmd.angular.z = -msg->data;
     vel_pub_->publish(cmd);
 }
 
