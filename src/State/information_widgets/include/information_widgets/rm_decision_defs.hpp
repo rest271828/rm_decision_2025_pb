@@ -4,6 +4,7 @@
 #include <cmath>
 #include <string>
 #include <vector>
+#include <random>
 
 #include "geometry_msgs/msg/pose.hpp"
 #include "iw_interfaces/msg/architecture.hpp"
@@ -173,6 +174,13 @@ public:
         double b1 = coeff1.second;
         double b2 = coeff2.second;
         return -(b1 - b2) / (k1 - k2);
+    }
+
+    static PlaneCoordinate random_point(double radius) {
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_real_distribution<> dis(-radius, radius);
+        return PlaneCoordinate(dis(gen), dis(gen));
     }
 };
 
