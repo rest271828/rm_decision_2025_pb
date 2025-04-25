@@ -35,13 +35,13 @@ public:
 
     std::shared_ptr<Robot> enemy_robot(const uint& id);
 
-    std::shared_ptr<Architecture> friend_outpost();
+    std::shared_ptr<Architecture> friend_outpost() ; //sqd changed; or can't be used in a const switch/if
 
-    std::shared_ptr<Architecture> enemy_outpost();
+    std::shared_ptr<Architecture> enemy_outpost() ;
 
-    std::shared_ptr<Architecture> friend_base();
+    std::shared_ptr<Architecture> friend_base() ;
 
-    std::shared_ptr<Architecture> enemy_base();
+    std::shared_ptr<Architecture> enemy_base() ;
 
     void update_from_message(const iw_interfaces::msg::Chessboard& msg);
 

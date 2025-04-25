@@ -41,23 +41,28 @@ void DecisionTestGamma::route_a() const {
     // test_display("While loop finished.\n");
 }
 
-void DecisionTestGamma::full_game() {
+void DecisionTestGamma::full_game()  {
+
     route_a();
+    
     if(chessboard_.enemy_outpost()->hp == 0 && chessboard_.friend_outpost()->hp != 0)
     {
         test_display("敌方前哨先被攻破\n");
-        enemyPatrol->execute();
+        start_random_point_switch(enemy_patrol);
+        
     }//敌方前哨先被攻破
     else if(chessboard_.enemy_outpost()->hp!= 0 && chessboard_.friend_outpost()->hp == 0)
     {
         test_display("我方前哨先被攻破\n");
-        friendlyPatrol->execute();
+        start_random_point_switch(friend_patrol);
+        
     }//我方前哨先被攻破
     else if(chessboard_.enemy_outpost()->hp == 0 && chessboard_.friend_outpost()->hp == 0)
     {
         if(chessboard_.enemy_base()->hp - chessboard_.friend_base()->hp < 1500)
         {
-            enemyPatrol->execute();
+            start_random_point_switch(enemy_patrol);
+            
         }
         else if(chessboard_.enemy_base()->hp - chessboard_.friend_base()->hp > 1500)
         {
@@ -80,6 +85,70 @@ void DecisionTestGamma::FriendlyPatrol::execute() const {
 
 void DecisionTestGamma::EnemyPatrol::execute() const {
     
+}
+
+void DecisionTestGamma::random_point_switch(const std::vector<RMDecision::PlaneCoordinate>& points) const{
+    // 确保 points.size() 不为 0
+    if (points.size() == 0) {
+        test_display("Points vector is empty, cannot switch to a new point.\n");
+        return;
+    }
+
+    std::uniform_int_distribution<int> dist(0, points.size() - 1);
+
+    std::random_device rd;
+    std::mt19937 rng(rd()); // Define and initialize the random number generator
+
+    RMDecision::PlaneCoordinate new_point;
+    do {
+        new_point = points[dist(rng)]; // Pass rng to dist
+    } while (new_point == last_point);
+
+    last_point = new_point;
+    nav_to_point_serially(new_point);
+    test_display("Moving to new point: (%.3f, %.3f)\n", new_point.x, new_point.y);
+}
+
+void DecisionTestGamma::start_random_point_switch(const std::vector<RMDecision::PlaneCoordinate>& points) {
+    auto timer_callback = [this, points]() -> void {
+        random_point_switch(points);
+    };
+
+    auto timer = this->create_wall_timer(
+        std::chrono::seconds(20),
+        timer_callback);
+
+}
+
+void DecisionTestGamma::responese_without_const(const std::string& instruction, const std::vector<float>& args)
+{
+    enum Inst {
+        PT,// patrol target
+        FU,//full game
+         };
+    const std::unordered_map<std::string, Inst> convert = {
+        {"PT", PT},
+        {"FU", FU},
+         };
+    auto it = convert.find(instruction);
+    if (it == convert.end()) {
+        return;
+    }
+    
+    switch (it->second)
+    {
+        case PT:
+            start_random_point_switch(enemy_patrol);
+            test_display("1\n");
+            break;
+        case FU:
+            full_game();
+            test_display("Govern the game.\n");
+            break;
+        default:
+            break;
+    }
+
 }
 
 void DecisionTestGamma::test_response(const std::string& instruction, const std::vector<float>& args) const {
@@ -161,6 +230,11 @@ void DecisionTestGamma::test_response(const std::string& instruction, const std:
     case RA: {
         route_a();
         test_display("Executing route a.\n");
+        break;
+    }
+    case FU: {
+        //full_game();
+        test_display("Govern the game.\n");
         break;
     }
 

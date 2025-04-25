@@ -35,8 +35,32 @@ private:
 
     void test_response(const std::string& instruction, const std::vector<float>& args) const override;
 
-    void full_game();
+    void responese_without_const(const std::string& instruction, const std::vector<float>& args) ;
+
+    void full_game() ;
 
     void fortress_defend() const;
+
+    void random_point_switch(const std::vector<RMDecision::PlaneCoordinate>& points) const;
+
+    void start_random_point_switch(const std::vector<RMDecision::PlaneCoordinate>& points) ;
+
+    std::vector<RMDecision::PlaneCoordinate> enemy_patrol = {
+        RMDecision::PlaneCoordinate(1.8, -2.7),
+        RMDecision::PlaneCoordinate(1.0, -3.5),
+        RMDecision::PlaneCoordinate(9.553, 2.817),
+        RMDecision::PlaneCoordinate(5.2, -2),
+        RMDecision::PlaneCoordinate(2, 2)
+    };//if this is enemy patrol targets
+    
+    std::vector<RMDecision::PlaneCoordinate> friend_patrol = {
+        RMDecision::PlaneCoordinate(3.0, 4.0),
+        RMDecision::PlaneCoordinate(4.0, 5.0),
+        RMDecision::PlaneCoordinate(5.0, 6.0),
+        RMDecision::PlaneCoordinate(6.0, 7.0),
+        RMDecision::PlaneCoordinate(7.0, 8.0)
+    };//if this is friend patrol targets
+    
+    mutable RMDecision::PlaneCoordinate last_point; // 使用 mutable 关键字，允许在consr的函数中修改last_point的值
 
 };
