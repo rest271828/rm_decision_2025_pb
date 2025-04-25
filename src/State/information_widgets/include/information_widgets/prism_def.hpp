@@ -19,6 +19,7 @@ public:
     uint ammo;
     uint shooter_heat;
     PoseStamped pose;
+    bool energy_buff;
 };
 
 class Track {
@@ -33,6 +34,7 @@ class Game {
 public:
     bool game_start;
     bool buy_ammo_ordered;
+    // uint patrol; 不确定受到的是裁判系统传入的还是可以存在自定义
     uint coins;
     uint projectile_allowance;
 };
