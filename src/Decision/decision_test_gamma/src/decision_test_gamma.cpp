@@ -1,29 +1,33 @@
-#include "decision_test_alpha/decision_test_alpha.hpp"
+#include "decision_test_gamma/decision_test_gamma.hpp"
 
-DecisionTestAlpha::DecisionTestAlpha(const rclcpp::NodeOptions& options)
-    : RMDecision::DecisionBeta(7, "decision_test_alpha", options) {
+DecisionTestGamma::DecisionTestGamma(const rclcpp::NodeOptions& options)
+    : RMDecision::DecisionBeta(7, "decision_test_gamma", options) {
     pose_sub_ = this->create_subscription<geometry_msgs::msg::PoseStamped>(
-        "navigator/current_pose", 10, std::bind(&DecisionTestAlpha::pose_sub_callback, this, std::placeholders::_1));
+        "navigator/current_pose", 10, std::bind(&DecisionTestGamma::pose_sub_callback, this, std::placeholders::_1));
 }
 
-void DecisionTestAlpha::pose_sub_callback(const geometry_msgs::msg::PoseStamped::SharedPtr msg) {
+void DecisionTestGamma::pose_sub_callback(const geometry_msgs::msg::PoseStamped::SharedPtr msg) {
     prism_.self->pose = *msg;
 }
 
-void DecisionTestAlpha::route_a() const {
+void DecisionTestGamma::route_a() const {
     nav_to_point_serially(5.2, -2);
     rotate_to_angle(0);
     move_to_point(RMDecision::PlaneCoordinate(1.8, -2.7));
     move_to_point(RMDecision::PlaneCoordinate(1.0, -3.5));
     nav_to_point_serially(9.553, 2.817);
     int t = 80;
+
     while (t--) {
+        std::cout << "1" << std::endl;
         set_angular_velocity(4);
+        std::cout << "2" << std::endl;
         rclcpp::Rate(20).sleep();
+        std::cout << "3" << std::endl;
     }
 }
 
-void DecisionTestAlpha::test_response(const std::string& instruction, const std::vector<float>& args) const {
+void DecisionTestGamma::test_response(const std::string& instruction, const std::vector<float>& args) const {
     enum Inst { NAV,
                 ROT,
                 SAV,
@@ -108,4 +112,4 @@ void DecisionTestAlpha::test_response(const std::string& instruction, const std:
 }
 
 #include "rm_decision_macros/decision_node_regist_macro.hpp"
-REGIST_DECISION_NODE(DecisionTestAlpha)
+REGIST_DECISION_NODE(DecisionTestGamma)
