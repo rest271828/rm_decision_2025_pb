@@ -16,29 +16,29 @@ void DecisionTestGamma::route_a() const {
     move_to_point(RMDecision::PlaneCoordinate(1.8, -2.7));
     move_to_point(RMDecision::PlaneCoordinate(1.0, -3.5));
     nav_to_point_serially(9.553, 2.817);
-    //int t = 80;
+    int t = 80;
 
-    // 添加调试日志，确认循环是否进入
-    //test_display("Entering while loop with t = %d\n", t);
+    //添加调试日志，确认循环是否进入
+    test_display("Entering while loop with t = %d\n", t);
 
-    // while (t--) {
-    //     // 强制刷新 std::cout 缓冲区
-    //     std::cout << "1" << std::endl;
-    //     set_angular_velocity(4);
-    //     std::cout << "2" << std::endl;
+    while (t--) {
+        // 强制刷新 std::cout 缓冲区
+        std::cout << "1" << std::endl;
+        set_angular_velocity(4);
+        std::cout << "2" << std::endl;
 
-    //     // 使用 rclcpp::Rate 控制频率
-    //     rclcpp::Rate(20).sleep();
+        // 使用 rclcpp::Rate 控制频率
+        rclcpp::Rate(20).sleep();
 
-    //     // 强制刷新 std::cout 缓冲区
-    //     std::cout << "3" << std::endl;
+        // 强制刷新 std::cout 缓冲区
+        std::cout << "3" << std::endl;
 
-    //     // 添加调试日志，确认循环迭代次数
-    //     test_display("Iteration: %d\n", t);
-    // }
+        // 添加调试日志，确认循环迭代次数
+        test_display("Iteration: %d\n", t);
+    }
 
-    // // 添加调试日志，确认循环结束
-    // test_display("While loop finished.\n");
+    // 添加调试日志，确认循环结束
+    test_display("While loop finished.\n");
 }
 
 void DecisionTestGamma::full_game()  {
@@ -73,8 +73,20 @@ void DecisionTestGamma::full_game()  {
 }
 
 void DecisionTestGamma::fortress_defend() const {
-    
-    nav_to_point_serially(RMDecision::PlaneCoordinate(2,2));//给出的堡垒点
+    auto currentPoint = get_current_coordinate();
+    if(currentPoint.x > 0)
+    {
+        nav_to_point_serially(5.2, -2);//右侧上坡点
+        rotate_to_angle(0);
+    }
+    else if(currentPoint.x < 0)
+    {
+        nav_to_point_serially(-5.2, -2);//左侧上坡点
+        rotate_to_angle(PI);
+    }
+
+    //nav_to_point_serially(RMDecision::PlaneCoordinate(1.862, 0.073));//给出的堡垒点
+    move_to_point(RMDecision::PlaneCoordinate(1.862, 0.073));
     test_display("arrived fortress!\n");
     set_angular_velocity(4);
 }
@@ -161,6 +173,7 @@ void DecisionTestGamma::test_response(const std::string& instruction, const std:
                 GCA,
                 PT,// patrol target
                 FU,//full game
+                FD,// fortress defend
                 RA };
 
     const std::unordered_map<std::string, Inst> convert = {
@@ -173,6 +186,7 @@ void DecisionTestGamma::test_response(const std::string& instruction, const std:
         {"GCA", GCA},
         {"PT", PT},
         {"FU", FU},
+        {"FD", FD},
         {"RA", RA}};
 
     auto it = convert.find(instruction);
@@ -235,6 +249,11 @@ void DecisionTestGamma::test_response(const std::string& instruction, const std:
     case FU: {
         //full_game();
         test_display("Govern the game.\n");
+        break;
+    }
+    case FD: {
+        fortress_defend();
+        test_display("Fortress defend.\n");
         break;
     }
 

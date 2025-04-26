@@ -48,7 +48,7 @@ private:
     std::vector<RMDecision::PlaneCoordinate> enemy_patrol = {
         RMDecision::PlaneCoordinate(1.8, -2.7),
         RMDecision::PlaneCoordinate(1.0, -3.5),
-        RMDecision::PlaneCoordinate(9.553, 2.817),
+        RMDecision::PlaneCoordinate(9.553, 2.817), //打前哨站
         RMDecision::PlaneCoordinate(5.2, -2),
         RMDecision::PlaneCoordinate(2, 2)
     };//if this is enemy patrol targets
@@ -60,7 +60,8 @@ private:
         RMDecision::PlaneCoordinate(6.0, 7.0),
         RMDecision::PlaneCoordinate(7.0, 8.0)
     };//if this is friend patrol targets
-    
+
+    RMDecision::PlaneCoordinate fortress_point; // 堡垒点坐标
     mutable RMDecision::PlaneCoordinate last_point; // 使用 mutable 关键字，允许在consr的函数中修改last_point的值
 
 };
