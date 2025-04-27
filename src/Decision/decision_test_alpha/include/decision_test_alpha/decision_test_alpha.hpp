@@ -11,5 +11,7 @@ private:
 
     void route_a() const;
 
+    void set_angular_velocity_debounce(const double& angularV) const;
+
     void test_response(const std::string& instruction, const std::vector<float>& args) const override;
 };

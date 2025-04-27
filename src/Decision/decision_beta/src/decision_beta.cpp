@@ -6,7 +6,7 @@ void DecisionBeta::rotate_to_angle(const double& targetAngle) const {
     const double KI = 0.03;
     const double KD = 0.001;
 
-    const double TOLARANCE = 0.01;
+    const double TOLARANCE = 0.03;
     const double RATE = 100;
     const double TIME_LIMIT = 60;  // 单位：秒
 
@@ -102,7 +102,7 @@ void DecisionBeta::move_to_point(const PlaneCoordinate& targetPoint) const {
 void DecisionBeta::nav_to_point_serially(const PlaneCoordinate& targetPoint) const {
     const double TOLARANCE = 0.08;
     const double RATE = 100;
-    const double TIME_LIMIT = 10;
+    const double TIME_LIMIT = 20;
 
     rclcpp::Time start_time = this->now();
 
