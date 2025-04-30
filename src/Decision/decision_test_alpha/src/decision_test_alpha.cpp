@@ -19,15 +19,31 @@ void DecisionTestAlpha::set_angular_velocity_debounce(const double& angularV) co
     }
 }
 
+void DecisionTestAlpha::pass_through_hill(
+    const RMDecision::PlaneCoordinate& start,
+    const RMDecision::PlaneCoordinate& end,
+    const double& angle) const {
+    nav_to_point_serially(start);
+    rotate_to_angle(angle);
+    move_to_point(end);
+}
+
 void DecisionTestAlpha::route_a() const {
-    nav_to_point_serially(5.2, -2);
-    rotate_to_angle(0);
-    move_to_point(RMDecision::PlaneCoordinate(1.8, -2.7));
+    // nav_to_point_serially(5.2, -2);
+    // rotate_to_angle(0);
+    // move_to_point(RMDecision::PlaneCoordinate(1.8, -2.7));
+    // move_to_point(RMDecision::PlaneCoordinate(1.8, -3.5));
+    // nav_to_point_serially(9.553, 2.817);
+    // if (get_current_coordinate().coincide_with(RMDecision::PlaneCoordinate(9.553, 2.817), 0.05) || true) {
+    //     set_angular_velocity_debounce(4);
+    // }
+
+    pass_through_hill(
+        RMDecision::PlaneCoordinate(5.2, -2),
+        RMDecision::PlaneCoordinate(1.8, -2.7), 0);
     move_to_point(RMDecision::PlaneCoordinate(1.8, -3.5));
     nav_to_point_serially(9.553, 2.817);
-    if (get_current_coordinate().coincide_with(RMDecision::PlaneCoordinate(9.553, 2.817), 0.05)||true) {
-        set_angular_velocity_debounce(4);
-    }
+    set_angular_velocity_debounce(4);
 }
 
 void DecisionTestAlpha::test_response(const std::string& instruction, const std::vector<float>& args) const {
@@ -38,7 +54,8 @@ void DecisionTestAlpha::test_response(const std::string& instruction, const std:
                 MOV,
                 GCP,
                 GCA,
-                RA };
+                RA,
+                PTH };
 
     const std::unordered_map<std::string, Inst> convert = {
         {"NAV", NAV},
@@ -48,10 +65,12 @@ void DecisionTestAlpha::test_response(const std::string& instruction, const std:
         {"MOV", MOV},
         {"GCP", GCP},
         {"GCA", GCA},
-        {"RA", RA}};
+        {"RA", RA},
+        {"PTH", PTH}};
 
     auto it = convert.find(instruction);
     if (it == convert.end()) {
+        test_display("Instruction undefined.\n");
         return;
     }
 
@@ -104,9 +123,17 @@ void DecisionTestAlpha::test_response(const std::string& instruction, const std:
 
     case RA: {
         route_a();
-        set_angular_velocity(4);
         break;
     }
+
+    case PTH:
+        if (args.size() == 5) {
+            test_display("Passing through the hill: (%.3f, %.3f) -> (%.3f, %.3f)", args[0], args[1], args[2], args[3]);
+            pass_through_hill(
+                RMDecision::PlaneCoordinate(args[0], args[1]),
+                RMDecision::PlaneCoordinate(args[2], args[3]), args[4]);
+            break;
+        }
 
     default:
         test_display("Instruction undefined.\n");
