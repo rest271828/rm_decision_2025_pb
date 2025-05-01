@@ -108,7 +108,7 @@ public:
 
 class DecisionBT : public DecisionBeta {
 public:
-    using DecisionBase::DecisionBase;
+    explicit DecisionBT(uint selfId, std::string nodeName, const rclcpp::NodeOptions& options);
 
     void nav_to_point(const PlaneCoordinate& targetPoint) const;
 
@@ -125,10 +125,18 @@ public:
     void get_current_angle() const;
 
 protected:
-    void register_rmbt_node(const RMBT::BehaviorTreeFactory& factory) const;
+    template <typename T, typename... ExtraArgs>
+    void register_rmbt_node(
+        const std::string nodeName, const RMBT::BehaviorTreeFactory& factory, ExtraArgs... args) const {
+        factory.registerNodeType<T>(nodeName, this, args);
+    }
+
+    virtual void register_nodes(const RMBT::BehaviorTreeFactory& factory) const;
 
 private:
-    virtual void register_nodes() const;
+    void bt_exec();
+
+    rclcpp::TimerBase::SharedPtr bt_exec_timer_;
 };
 
 }  // namespace RMDecision
