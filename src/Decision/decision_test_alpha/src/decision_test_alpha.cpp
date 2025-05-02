@@ -37,11 +37,12 @@ void DecisionTestAlpha::route_a() const {
     if (get_current_coordinate().coincide_with(RMDecision::PlaneCoordinate(9.553, 2.817), 0.05) || true) {
         set_angular_velocity_debounce(4);
     }
-    while (true) {
+    while (prism_.self->hp > 100) {
         rclcpp::Rate(0.5).sleep();
-        nav_to_point(RMDecision::PlaneCoordinate::random_point(1.5) + get_current_coordinate());
+        nav_to_point(RMDecision::PlaneCoordinate::random_point(0.3) + get_current_coordinate());
         set_angular_velocity_debounce(4);
     }
+    nav_to_point(0, 0);
 
     // pass_through_hill(
     //     RMDecision::PlaneCoordinate(5.2, -2),
