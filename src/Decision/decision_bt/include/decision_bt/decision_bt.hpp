@@ -6,39 +6,43 @@
 
 namespace RMDecision {
 
-class DecisionBT;
-
 namespace detail {
-template <typename T>
+template <typename T, typename U>
 class RMBTNode : public T {
-    static_assert(std::is_base_of_v<BT::TreeNode, T>, "T must inherit from BT::TreeNode");
+    static_assert(
+        std::is_base_of<BT::TreeNode, T>::value,
+        "RMBTNode class can only inherit from BT::TreeNode and its subclasses.");
 
 public:
-    RMBTNode(const std::string& name, const std::shared_ptr<DecisionBT> decisionNodeBT, const BT::NodeConfig& config)
-        : T(name, config), decision_node_beta_(decisionNodeBT) {}
+    RMBTNode(const std::string& name, const std::shared_ptr<U> host, const BT::NodeConfig& config)
+        : T(name, config), host_(host) {}
 
 private:
-    std::shared_ptr<DecisionBeta> decision_node_beta_;
+    std::shared_ptr<U> host_;
 };
 }  // namespace detail
 
 namespace RMBT {
-using SyncActionNode = detail::RMBTNode<BT::SyncActionNode>;
-using StatefulActionNode = detail::RMBTNode<BT::StatefulActionNode>;
-using ConditionNode = detail::RMBTNode<BT::ConditionNode>;
+template <typename U>
+using SyncActionNode = detail::RMBTNode<BT::SyncActionNode, U>;
+
+template <typename U>
+using StatefulActionNode = detail::RMBTNode<BT::StatefulActionNode, U>;
+
+template <typename U>
+using ConditionNode = detail::RMBTNode<BT::ConditionNode, U>;
 
 class BehaviorTreeFactory : public BT::BehaviorTreeFactory {
 public:
-    template <typename T, typename... ExtraArgs>
-    void registerNodeType(const std::string& ID, const std::shared_ptr<DecisionBT> decisionNodeBT,
+    template <typename T, typename U, typename... ExtraArgs>
+    void registerNodeType(const std::string& ID, const U* host,
                           const BT::PortsList& ports, ExtraArgs... args) {
         static_assert(std::is_base_of<RMBT::SyncActionNode, T>::value ||
                           std::is_base_of<RMBT::StatefulActionNode, T>::value ||
                           std::is_base_of<RMBT::ConditionNode, T>::value,
                       "[registerNode]: accepts only classed derived from either "
-                      "RMBT::SyncActionNode, "
-                      "RMBT::StatefulActionNode or RMBT::ConditionNode, "
-                      "or you should not provide the decisionNodeBT.");
+                      "RMBT::SyncActionNode, RMBT::StatefulActionNode or RMBT::ConditionNode, "
+                      "or you should not provide the host.");
 
         constexpr bool default_constructable =
             std::is_constructible<T, const std::string&>::value;
@@ -57,15 +61,15 @@ public:
         // clang-format on
 
         registerBuilder(CreateManifest<T>(ID, ports),
-                        [decisionNodeBT = std::shared_ptr<DecisionBT>(decisionNodeBT)](
+                        [host = std::shared_ptr<U>(host)](
                             const string& name, const BT::NodeConfig& config) {
-                            return std::make_unique<T>(name, decisionNodeBT, config);
+                            return std::make_unique<T>(name, host, config);
                         });
     }
 
-    template <typename T, typename... ExtraArgs>
+    template <typename T, typename U, typename... ExtraArgs>
     void registerNodeType(const std::string& ID,
-                          const std::shared_ptr<DecisionBT> decisionNodeBT,
+                          const U* host,
                           ExtraArgs... args) {
         if constexpr (std::is_abstract_v<T>) {
             // check first if the given class is abstract
@@ -75,7 +79,7 @@ public:
                           "method in the derived class?");
         } else {
             constexpr bool param_constructable =
-                std::is_constructible<T, const std::string&, const std::shared_ptr<DecisionBT>, const NodeConfig&,
+                std::is_constructible<T, const std::string&, const std::shared_ptr<U>, const NodeConfig&,
                                       ExtraArgs...>::value;
             constexpr bool has_static_ports_list = has_static_method_providedPorts<T>::value;
 
@@ -91,17 +95,19 @@ public:
             }
         // clang-format on
 
-        registerNodeType<T>(ID, decisionNodeBT, getProvidedPorts<T>(), args...);
+        registerNodeType<T, U>(ID, host, getProvidedPorts<T>(), args...);
     }
 };
 }  // namespace RMBT
 
-class NavToPoint : public RMBT::SyncActionNode {
+class DecisionBT;
+
+class NavToPoint : public RMBT::SyncActionNode<DecisionBT> {
 public:
     NavToPoint(const std::string& name,
                const std::shared_ptr<DecisionBT> decisionNodeBT,
                const BT::NodeConfig& config)
-        : RMBT::SyncActionNode(name, decisionNodeBT, config) {}
+        : RMBT::SyncActionNode<DecisionBT>(name, decisionNodeBT, config) {}
 
     BT::NodeStatus tick() override;
 };
@@ -118,23 +124,19 @@ public:
 
     void rotate_to_angle(const double& targetAngle) const;
 
-    void rotate_to_vec(const PlaneCoordinate& targetPoint) const;
+    void rotate_to_vec(const PlaneCoordinate& vec) const;
 
-    void get_current_coordinate() const;
+    PlaneCoordinate get_current_coordinate() const;
 
-    void get_current_angle() const;
+    double get_current_angle() const;
 
 protected:
-    template <typename T, typename... ExtraArgs>
-    void register_rmbt_node(
-        const std::string nodeName, const RMBT::BehaviorTreeFactory& factory, ExtraArgs... args) const {
-        factory.registerNodeType<T>(nodeName, this, args);
-    }
-
     virtual void register_nodes(const RMBT::BehaviorTreeFactory& factory) const;
 
 private:
     void bt_exec();
+
+    void register_basic_nodes(const RMBT::BehaviorTreeFactory& factory) const;
 
     rclcpp::TimerBase::SharedPtr bt_exec_timer_;
 };

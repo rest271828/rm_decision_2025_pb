@@ -22,7 +22,8 @@ Navigator::Navigator(const rclcpp::NodeOptions& options) : Node("navigator", opt
                                                      std::placeholders::_2);
     send_goal_options_.result_callback = std::bind(&Navigator::result_callback, this, std::placeholders::_1);
 
-    timer_ = this->create_wall_timer(std::chrono::milliseconds(10), std::bind(&Navigator::timer_callback, this), callback_group_);
+    timer_ = this->create_wall_timer(
+        std::chrono::milliseconds(10), std::bind(&Navigator::timer_callback, this), callback_group_);
 
     tf2_buffer_ = std::make_shared<tf2_ros::Buffer>(this->get_clock());
     tf2_listener_ = std::make_shared<tf2_ros::TransformListener>(*tf2_buffer_);
