@@ -6,16 +6,38 @@ DecisionBT::DecisionBT(uint selfId, std::string nodeName, const rclcpp::NodeOpti
     RMBT::BehaviorTreeFactory factory;
     this->register_basic_nodes(factory);
     this->register_nodes(factory);
+    tree_ = factory.createTreeFromFile(bt_file_path());
 
-    bt_exec_timer_ = this->create_wall_timer(
-        std::chrono::milliseconds(200), std::bind(&DecisionBT::bt_exec, this));
+    bt_exec_thread_ = std::thread(&DecisionBT::bt_exec, this);
+}
+
+DecisionBT::~DecisionBT() {
+    if (bt_exec_thread_.joinable()) {
+        bt_exec_thread_.join();
+    }
 }
 
 void DecisionBT::bt_exec() {
+    test_display("[ ####### TREE TICKING ####### ]\n");
+    auto status = tree_.tickOnce();
+    test_display("[ ###### STATUS:%s ###### ]\n", toStr(status));
+
+    while (status == BT::NodeStatus::RUNNING) {
+        tree_.sleep(std::chrono::milliseconds(100));
+        test_display("[ ####### TREE TICKING ####### ]\n");
+        status = tree_.tickOnce();
+        test_display("[ ###### STATUS:%s ###### ]\n\n", toStr(status));
+    }
 }
 
-void DecisionBT::register_basic_nodes(const RMBT::BehaviorTreeFactory& factory) const {
+void DecisionBT::register_basic_nodes(RMBT::BehaviorTreeFactory& factory) {
     factory.registerNodeType<NavToPoint, DecisionBT>("NavToPoint", this);
+    factory.registerNodeType<NavToPointSerially, DecisionBT>("NavToPointSerially", this);
+    factory.registerNodeType<MoveToPoint, DecisionBT>("NoveToPoint", this);
+    factory.registerNodeType<RotateToAngle, DecisionBT>("RotateToAngle", this);
+    factory.registerNodeType<RotateToVec, DecisionBT>("RotateToVec", this);
+    factory.registerNodeType<PointAchieved, DecisionBT>("PointAchieved", this);
+    factory.registerNodeType<AngleAchieved, DecisionBT>("AngleAchieved", this);
 }
 
 void DecisionBT::nav_to_point(const PlaneCoordinate& targetPoint) const {
@@ -44,4 +66,11 @@ PlaneCoordinate DecisionBT::get_current_coordinate() const {
 
 double DecisionBT::get_current_angle() const {
     return DecisionBeta::get_current_angle();
+}
+
+void DecisionBT::test_display(const char* format, ...) const {
+    va_list args;
+    va_start(args, format);
+    DecisionBeta::test_display(format, args);
+    va_end(args);
 }
