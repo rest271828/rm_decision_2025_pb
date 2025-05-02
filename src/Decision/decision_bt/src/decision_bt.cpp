@@ -1,4 +1,5 @@
 #include "decision_bt/decision_bt.hpp"
+
 using namespace RMDecision;
 
 DecisionBT::DecisionBT(uint selfId, std::string nodeName, const rclcpp::NodeOptions& options)
@@ -33,11 +34,19 @@ void DecisionBT::bt_exec() {
 void DecisionBT::register_basic_nodes(RMBT::BehaviorTreeFactory& factory) {
     factory.registerNodeType<NavToPoint, DecisionBT>("NavToPoint", this);
     factory.registerNodeType<NavToPointSerially, DecisionBT>("NavToPointSerially", this);
-    factory.registerNodeType<MoveToPoint, DecisionBT>("NoveToPoint", this);
+    factory.registerNodeType<MoveToPoint, DecisionBT>("MoveToPoint", this);
     factory.registerNodeType<RotateToAngle, DecisionBT>("RotateToAngle", this);
     factory.registerNodeType<RotateToVec, DecisionBT>("RotateToVec", this);
     factory.registerNodeType<PointAchieved, DecisionBT>("PointAchieved", this);
     factory.registerNodeType<AngleAchieved, DecisionBT>("AngleAchieved", this);
+}
+
+void DecisionBT::register_nodes(RMBT::BehaviorTreeFactory& factory) {
+    return;
+}
+
+std::string DecisionBT::bt_file_path() {
+    return ".";
 }
 
 void DecisionBT::nav_to_point(const PlaneCoordinate& targetPoint) const {
