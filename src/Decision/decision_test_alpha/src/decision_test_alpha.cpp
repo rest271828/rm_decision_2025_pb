@@ -29,21 +29,26 @@ void DecisionTestAlpha::pass_through_hill(
 }
 
 void DecisionTestAlpha::route_a() const {
-    // nav_to_point_serially(5.2, -2);
-    // rotate_to_angle(0);
-    // move_to_point(RMDecision::PlaneCoordinate(1.8, -2.7));
-    // move_to_point(RMDecision::PlaneCoordinate(1.8, -3.5));
-    // nav_to_point_serially(9.553, 2.817);
-    // if (get_current_coordinate().coincide_with(RMDecision::PlaneCoordinate(9.553, 2.817), 0.05) || true) {
-    //     set_angular_velocity_debounce(4);
-    // }
-
-    pass_through_hill(
-        RMDecision::PlaneCoordinate(5.2, -2),
-        RMDecision::PlaneCoordinate(1.8, -2.7), 0);
+    nav_to_point_serially(5.2, -2);
+    rotate_to_angle(0);
+    move_to_point(RMDecision::PlaneCoordinate(1.8, -2.7));
     move_to_point(RMDecision::PlaneCoordinate(1.8, -3.5));
     nav_to_point_serially(9.553, 2.817);
-    set_angular_velocity_debounce(4);
+    if (get_current_coordinate().coincide_with(RMDecision::PlaneCoordinate(9.553, 2.817), 0.05) || true) {
+        set_angular_velocity_debounce(4);
+    }
+    while (true) {
+        rclcpp::Rate(0.5).sleep();
+        nav_to_point(RMDecision::PlaneCoordinate::random_point(1.5) + get_current_coordinate());
+        set_angular_velocity_debounce(4);
+    }
+
+    // pass_through_hill(
+    //     RMDecision::PlaneCoordinate(5.2, -2),
+    //     RMDecision::PlaneCoordinate(1.8, -2.7), 0);
+    // move_to_point(RMDecision::PlaneCoordinate(1.8, -3.5));
+    // nav_to_point_serially(9.553, 2.817);
+    // set_angular_velocity_debounce(4);
 }
 
 void DecisionTestAlpha::test_response(const std::string& instruction, const std::vector<float>& args) const {

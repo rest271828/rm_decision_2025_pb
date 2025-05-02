@@ -34,7 +34,7 @@ void DecisionBT::bt_exec() {
 void DecisionBT::register_basic_nodes(RMBT::BehaviorTreeFactory& factory) {
     factory.registerNodeType<NavToPoint, DecisionBT>("NavToPoint", this);
     factory.registerNodeType<NavToPointSerially, DecisionBT>("NavToPointSerially", this);
-    factory.registerNodeType<MoveToPoint, DecisionBT>("NoveToPoint", this);
+    factory.registerNodeType<MoveToPoint, DecisionBT>("MoveToPoint", this);
     factory.registerNodeType<RotateToAngle, DecisionBT>("RotateToAngle", this);
     factory.registerNodeType<RotateToVec, DecisionBT>("RotateToVec", this);
     factory.registerNodeType<PointAchieved, DecisionBT>("PointAchieved", this);
