@@ -1,26 +1,33 @@
 cmake_minimum_required(VERSION 3.8)
 project(decision_bt)
 
-if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-  add_compile_options(-Wall -Wextra -Wpedantic)
-endif()
+## Use C++17
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# find dependencies
-find_package(ament_cmake REQUIRED)
-# uncomment the following section in order to fill in
-# further dependencies manually.
-# find_package(<dependency> REQUIRED)
+## By adding -Wall and -Werror, the compiler does not ignore warnings anymore,
+## enforcing cleaner code.
+add_definitions(-Wall -Werror)
 
-if(BUILD_TESTING)
-  find_package(ament_lint_auto REQUIRED)
-  # the following line skips the linter which checks for copyrights
-  # comment the line when a copyright and license is added to all source files
-  set(ament_cmake_copyright_FOUND TRUE)
-  # the following line skips cpplint (only works in a git repo)
-  # comment the line when this package is in a git repo and when
-  # a copyright and license is added to all source files
-  set(ament_cmake_cpplint_FOUND TRUE)
-  ament_lint_auto_find_test_dependencies()
-endif()
+## Export compile commands for clangd
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-ament_package()
+find_package(ament_cmake_auto REQUIRED)
+
+ament_auto_find_build_dependencies()
+
+set(SRC_LIST
+  src/decision_bt.cpp
+)
+
+set(HEAD_LIST
+  include/decision_bt/decision_bt.hpp
+  include/decision_bt/basic_bt_nodes.hpp
+)
+
+ament_auto_add_library(decision_bt_lib SHARED
+  ${SRC_LIST}
+  ${HEAD_LIST}
+)
+
+ament_auto_package()

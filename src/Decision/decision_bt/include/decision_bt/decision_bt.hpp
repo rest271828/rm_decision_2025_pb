@@ -38,9 +38,9 @@ public:
     template <typename T, typename U, typename... ExtraArgs>
     void registerNodeType(const std::string& ID, U* host,
                           const BT::PortsList& ports, ExtraArgs... args) {
-        static_assert(std::is_base_of<RMBT::SyncActionNode, T>::value ||
-                          std::is_base_of<RMBT::StatefulActionNode, T>::value ||
-                          std::is_base_of<RMBT::ConditionNode, T>::value,
+        static_assert(std::is_base_of<SyncActionNode<U>, T>::value ||
+                          std::is_base_of<StatefulActionNode<U>, T>::value ||
+                          std::is_base_of<ConditionNode<U>, T>::value,
                       "[registerNode]: accepts only classed derived from either "
                       "RMBT::SyncActionNode, RMBT::StatefulActionNode or RMBT::ConditionNode, "
                       "or you should not provide the host.");
@@ -48,7 +48,7 @@ public:
         constexpr bool default_constructable =
             std::is_constructible<T, const std::string&>::value;
         constexpr bool param_constructable =
-            std::is_constructible<T, const std::string&, U*, const NodeConfig&, ExtraArgs...>::value;
+            std::is_constructible<T, const std::string&, std::shared_ptr<U>, const BT::NodeConfig&, ExtraArgs...>::value;
 
         // clang-format off
         static_assert(!std::is_abstract<T>::value,
@@ -56,14 +56,14 @@ public:
                     "Did you override the methods tick() and halt()?");
 
         static_assert(default_constructable || param_constructable,
-        "[registerNode]: the registered class must have at least one of these two constructors:\n"
-        "  (const std::string&, const NodeConfig&) or (const std::string&)\n"
+        "[registerNode]: the registered RMBTNode must have at least two of these three constructors:\n"
+        "  (const std::string&, std::shared_ptr<T>, const NodeConfig&) or (const std::string&, , std::shared_ptr<T>)\n"
         "Check also if the constructor is public!)");
         // clang-format on
 
-        registerBuilder(CreateManifest<T>(ID, ports),
+        registerBuilder(BT::CreateManifest<T>(ID, ports),
                         [host = std::shared_ptr<U>(host)](
-                            const string& name, const BT::NodeConfig& config) {
+                            const std::string& name, const BT::NodeConfig& config) {
                             return std::make_unique<T>(name, host, config);
                         });
     }
@@ -80,9 +80,9 @@ public:
                           "method in the derived class?");
         } else {
             constexpr bool param_constructable =
-                std::is_constructible<T, const std::string&, U*, const NodeConfig&,
+                std::is_constructible<T, const std::string&, std::shared_ptr<U>, const BT::NodeConfig&,
                                       ExtraArgs...>::value;
-            constexpr bool has_static_ports_list = has_static_method_providedPorts<T>::value;
+            constexpr bool has_static_ports_list = BT::has_static_method_providedPorts<T>::value;
 
             // clang-format off
             static_assert(!(param_constructable && !has_static_ports_list),
@@ -90,13 +90,13 @@ public:
                             "  PortsList providedPorts();\n");
 
             static_assert(!(has_static_ports_list && !param_constructable),
-                            "[registerNode]: since you have a static method providedPorts(),\n"
+                            "[registerNode]: since you have a static method providedPorts() in a RMBTNode,\n"
                             "you MUST add a constructor with signature:\n"
-                            "(const std::string&, const NodeConfig&)\n");
+                            "(const std::string&, std::shared_ptr<T>, const NodeConfig&)\n");
             }
         // clang-format on
 
-        registerNodeType<T, U>(ID, host, getProvidedPorts<T>(), args...);
+        registerNodeType<T, U>(ID, host, BT::getProvidedPorts<T>(), args...);
     }
 };
 }  // namespace RMBT
@@ -124,9 +124,9 @@ public:
     void test_display(const char* format, ...) const;
 
 protected:
-    virtual void register_nodes(RMBT::BehaviorTreeFactory& factory) = 0;
+    virtual void register_nodes(RMBT::BehaviorTreeFactory& factory);
 
-    virtual std::string bt_file_path() = 0;
+    virtual std::string bt_file_path();
 
 private:
     void bt_exec();
@@ -137,14 +137,6 @@ private:
     BT::Tree tree_;
 };
 
-class NavToPoint;
-class NavToPointSerially;
-class MoveToPoint;
-class RotateToAngle;
-class RotateToVec;
-class PointAchieved;
-class AngleAchieved;
-
 }  // namespace RMDecision
 
 namespace BT {
@@ -154,7 +146,7 @@ inline RMDecision::PlaneCoordinate convertFromString(StringView str) {
     if (parts.size() != 2) {
         throw RuntimeError("invalid input)");
     } else {
-        PlaneCoordinate output;
+        RMDecision::PlaneCoordinate output;
         output.x = convertFromString<double>(parts[0]);
         output.y = convertFromString<double>(parts[1]);
         return output;

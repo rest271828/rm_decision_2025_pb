@@ -1,5 +1,6 @@
 #include "decision_bt/decision_bt.hpp"
-using namespace RMDecision;
+
+namespace RMDecision {
 
 class NavToPoint : public RMBT::SyncActionNode<DecisionBT> {
 public:
@@ -162,3 +163,5 @@ public:
         }
     }
 };
+
+}  // namespace RMDecision
