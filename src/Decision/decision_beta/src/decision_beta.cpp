@@ -16,6 +16,9 @@ void DecisionBeta::rotate_to_angle(const double& targetAngle) const {
     rclcpp::Time lastTime = start_time;
 
     while (rclcpp::ok()) {
+        if (abort_)
+            return;
+
         auto currentTime = this->now();
         double deltaTime = (currentTime - lastTime).seconds();  // 动态计算时间间隔
         lastTime = currentTime;
@@ -68,6 +71,8 @@ void DecisionBeta::move_to_point(const PlaneCoordinate& targetPoint) const {
     rclcpp::Time lastTime = start_time;
 
     while (rclcpp::ok()) {
+        if (abort_)
+            return;
         auto currentTime = this->now();
         double deltaTime = (currentTime - lastTime).seconds();  // 动态计算时间间隔
         lastTime = currentTime;
@@ -107,6 +112,8 @@ void DecisionBeta::nav_to_point_serially(const PlaneCoordinate& targetPoint) con
     rclcpp::Time start_time = this->now();
 
     while (rclcpp::ok()) {
+        if (abort_)
+            return;
         nav_to_point(targetPoint);
         PlaneCoordinate currentCoordinate = get_current_coordinate();
         if (currentCoordinate.coincide_with(targetPoint, TOLARANCE) || (this->now() - start_time).seconds() > TIME_LIMIT) {
@@ -119,4 +126,12 @@ void DecisionBeta::nav_to_point_serially(const PlaneCoordinate& targetPoint) con
 
 void DecisionBeta::nav_to_point_serially(const double& x, const double& y) const {
     nav_to_point_serially(PlaneCoordinate(x, y));
+}
+
+void DecisionBeta::abort() {
+    abort_.store(true);
+}
+
+void DecisionBeta::reset() {
+    abort_.store(false);
 }
