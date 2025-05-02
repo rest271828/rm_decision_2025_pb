@@ -21,8 +21,9 @@ set(SRC_LIST
 )
 
 set(HEAD_LIST
+  include/decision_bt/rmbt.hpp
+  include/decision_bt/node_def.hpp
   include/decision_bt/decision_bt.hpp
-  include/decision_bt/basic_bt_nodes.hpp
 )
 
 ament_auto_add_library(decision_bt_lib SHARED

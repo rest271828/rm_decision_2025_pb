@@ -1,7 +1,5 @@
 #include "decision_bt/decision_bt.hpp"
 
-#include "decision_bt/basic_bt_nodes.hpp"
-
 using namespace RMDecision;
 
 DecisionBT::DecisionBT(uint selfId, std::string nodeName, const rclcpp::NodeOptions& options)
