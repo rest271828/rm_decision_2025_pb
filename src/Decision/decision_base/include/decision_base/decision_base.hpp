@@ -52,7 +52,7 @@ protected:
 
     void test_display(const char* format, ...) const;
 
-    virtual void test_response(const std::string& instruction, const std::vector<float>& args) = 0;
+    virtual void test_response(const std::string& instruction, const std::vector<float>& args) {};
 
     Chessboard chessboard_;
     Prism prism_;

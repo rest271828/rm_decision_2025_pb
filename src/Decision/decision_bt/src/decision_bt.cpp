@@ -7,7 +7,7 @@ DecisionBT::DecisionBT(uint selfId, std::string nodeName, const rclcpp::NodeOpti
     RMBT::BehaviorTreeFactory factory;
     this->register_basic_nodes(factory);
     this->register_nodes(factory);
-    tree_ = factory.createTreeFromFile(bt_file_path());
+    // tree_ = factory.createTreeFromFile(bt_file_path());
 
     bt_exec_thread_ = std::thread(&DecisionBT::bt_exec, this);
 }

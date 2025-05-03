@@ -46,7 +46,7 @@ public:
                       "or you should not provide the host.");
 
         constexpr bool default_constructable =
-            std::is_constructible<T, const std::string&>::value;
+            std::is_constructible<T, const std::string&, std::shared_ptr<U>>::value;
         constexpr bool param_constructable =
             std::is_constructible<T, const std::string&, std::shared_ptr<U>, const BT::NodeConfig&, ExtraArgs...>::value;
 
@@ -57,14 +57,19 @@ public:
 
         static_assert(default_constructable || param_constructable,
         "[registerNode]: the registered RMBTNode must have at least two of these three constructors:\n"
-        "  (const std::string&, std::shared_ptr<T>, const NodeConfig&) or (const std::string&, , std::shared_ptr<T>)\n"
+        "  (const std::string&, std::shared_ptr<T>, const NodeConfig&) or (const std::string&, std::shared_ptr<T>)\n"
         "Check also if the constructor is public!)");
         // clang-format on
 
+        std::shared_ptr<U> hostptr = std::shared_ptr<U>(host);
         registerBuilder(BT::CreateManifest<T>(ID, ports),
-                        [host = std::shared_ptr<U>(host)](
+                        [=](
                             const std::string& name, const BT::NodeConfig& config) {
-                            return std::make_unique<T>(name, host, config);
+                            if constexpr (param_constructable) {
+                                return std::make_unique<T>(name, hostptr, config, args...);
+                            } else if constexpr (default_constructable) {
+                                return std::make_unique<T>(name, hostptr, args...);
+                            }
                         });
     }
 
