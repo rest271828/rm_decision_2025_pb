@@ -24,6 +24,9 @@ DecisionBase::DecisionBase(uint selfId, std::string nodeName, const rclcpp::Node
     nav_vel_pub_ = this->create_publisher<std_msgs::msg::Float32MultiArray>("nav_vel", 10, pubOpt);
     angle_pub_ = this->create_publisher<std_msgs::msg::Float32>("to_rotator", 10, pubOpt);
     test_feedback_pub_ = this->create_publisher<std_msgs::msg::String>("test_feedback", 10, pubOpt);
+
+    linear_offset_ = PlaneCoordinate(0, 0);
+    angular_offset_ = 0;
 }
 
 void DecisionBase::chessboard_sub_callback(const iw_interfaces::msg::Chessboard::SharedPtr msg) {
@@ -45,11 +48,12 @@ void DecisionBase::nav_to_point(const double& x, const double& y, bool instant) 
 }
 
 void DecisionBase::nav_to_point(const PlaneCoordinate& targetPoint, bool instant) const {
+    PlaneCoordinate tranformed = targetPoint.transform(linear_offset_, angular_offset_);
     navigator_interfaces::msg::Navigate msg;
     msg.pose.header.stamp = this->now();
     msg.pose.header.frame_id = "map";
-    msg.pose.pose.position.x = targetPoint.x;
-    msg.pose.pose.position.y = targetPoint.y;
+    msg.pose.pose.position.x = tranformed.x;
+    msg.pose.pose.position.y = tranformed.y;
     msg.pose.pose.position.z = 0.0;
     msg.pose.pose.orientation.x = 0.0;
     msg.pose.pose.orientation.y = 0.0;
@@ -66,13 +70,14 @@ void DecisionBase::nav_to_pose(const PoseStamped& stampedPose, bool instant) con
 }
 
 PlaneCoordinate DecisionBase::get_current_coordinate() const {
-    return PlaneCoordinate(prism_.self->pose);
+    return PlaneCoordinate(prism_.self->pose).transform(-linear_offset_, -angular_offset_);
 }
 
 void DecisionBase::set_linear_velocity(const PlaneCoordinate& vec) const {
+    PlaneCoordinate transformed = vec.transform(linear_offset_, angular_offset_);
     std_msgs::msg::Float32MultiArray msg;
-    msg.data.push_back(vec.x);
-    msg.data.push_back(vec.y);
+    msg.data.push_back(transformed.x);
+    msg.data.push_back(transformed.y);
     nav_vel_pub_->publish(msg);
 }
 
@@ -82,13 +87,37 @@ void DecisionBase::set_angular_velocity(const double& angularV) const {
     angle_pub_->publish(msg);
 }
 
+void DecisionBase::set_linear_offset(const PlaneCoordinate& offset) {
+    linear_offset_ = offset;
+}
+
+void DecisionBase::set_angular_offset(double offset) {
+    angular_offset_ = offset;
+}
+
+PlaneCoordinate DecisionBase::get_linear_offset() const {
+    return linear_offset_;
+}
+
+double DecisionBase::get_angular_offset() const {
+    return angular_offset_;
+}
+
+void DecisionBase::mark_origin_linear() {
+    set_linear_offset(-get_current_coordinate());
+}
+
+void DecisionBase::mark_origin_angular() {
+    set_angular_offset(-(get_current_coordinate().angle()));
+}
+
 double DecisionBase::get_current_angle() const {
     double w = prism_.self->pose.pose.orientation.w;
     double x = prism_.self->pose.pose.orientation.x;
     double y = prism_.self->pose.pose.orientation.y;
     double z = prism_.self->pose.pose.orientation.z;
 
-    double yaw = std::atan2(2 * (w * z + x * y), 1 - 2 * (x * x + z * z));
+    double yaw = std::atan2(2 * (w * z + x * y), 1 - 2 * (x * x + z * z)) + angular_offset_;
     return yaw;
 }
 

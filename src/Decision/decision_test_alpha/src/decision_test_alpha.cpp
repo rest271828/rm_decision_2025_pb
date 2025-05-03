@@ -52,16 +52,23 @@ void DecisionTestAlpha::route_a() const {
     nav_to_point(0, 0);
 }
 
-void DecisionTestAlpha::test_response(const std::string& instruction, const std::vector<float>& args) const {
-    enum Inst { NAV,
-                ROT,
-                SAV,
-                SLV,
-                MOV,
-                GCP,
-                GCA,
-                RA,
-                PTH };
+void DecisionTestAlpha::test_response(const std::string& instruction, const std::vector<float>& args) {
+    enum Inst { NAV,  // nav_to_point
+                ROT,  // rotate_to_angle
+                SAV,  // set_angular_vel
+                SLV,  // set_linear_vel
+                MOV,  // move_to_point
+                GCP,  // get_current_point
+                GCA,  // get_current_angle
+                RA,   // route_a
+                PTH,  // pass_through_hill
+                SLO,  // set_linear_offset
+                SAO,  // set_angular_offset
+                GLO,  // get_linear_offset
+                GAO,  // get_angular_offset
+                OML,  // mark_origin_linear
+                OMA   // marl_origin_angular
+    };
 
     const std::unordered_map<std::string, Inst> convert = {
         {"NAV", NAV},
@@ -72,7 +79,13 @@ void DecisionTestAlpha::test_response(const std::string& instruction, const std:
         {"GCP", GCP},
         {"GCA", GCA},
         {"RA", RA},
-        {"PTH", PTH}};
+        {"PTH", PTH},
+        {"SLO", SLO},
+        {"SAO", SAO},
+        {"GLO", GLO},
+        {"GAO", GAO},
+        {"OML", OML},
+        {"OMA", OMA}};
 
     auto it = convert.find(instruction);
     if (it == convert.end()) {
@@ -139,6 +152,46 @@ void DecisionTestAlpha::test_response(const std::string& instruction, const std:
                 RMDecision::PlaneCoordinate(args[0], args[1]),
                 RMDecision::PlaneCoordinate(args[2], args[3]), args[4]);
             break;
+        }
+
+    case SLO:
+        if (args.size() == 2) {
+            test_display("Set linear offset: (%.3f, %.3f)", args[0], args[1]);
+            set_linear_offset(RMDecision::PlaneCoordinate(args[0], args[1]));
+            break;
+        }
+
+    case SAO:
+        if (args.size() == 1) {
+            test_display("Set angular offset: %.3f", args[0]);
+            set_angular_offset(args[0]);
+            break;
+        }
+
+    case GLO: {
+        RMDecision::PlaneCoordinate offset = get_linear_offset();
+        test_display("Linear offset: (%.3f, %.3f)", offset.x, offset.y);
+        break;
+    }
+
+    case GAO: {
+        double offset = get_angular_offset();
+        test_display("Angular offset: %.3f", offset);
+        break;
+    }
+
+    case OML:
+        if (args.size() == 0) {
+            mark_origin_linear();
+            RMDecision::PlaneCoordinate offset = get_linear_offset();
+            test_display("Marked linear offset: (%.3f, %.3f)", offset.x, offset.y);
+        }
+
+    case OMA:
+        if (args.size() == 0) {
+            mark_origin_angular();
+            double offset = get_angular_offset();
+            test_display("Marked angular offset: %.3f", offset);
         }
 
     default:
