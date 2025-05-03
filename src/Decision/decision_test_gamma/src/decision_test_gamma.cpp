@@ -27,7 +27,7 @@ void DecisionTestGamma::route_a() const {
     }
 }
 
-void DecisionTestGamma::test_response(const std::string& instruction, const std::vector<float>& args) const {
+void DecisionTestGamma::test_response(const std::string& instruction, const std::vector<float>& args) {
     enum Inst { NAV,
                 ROT,
                 SAV,
