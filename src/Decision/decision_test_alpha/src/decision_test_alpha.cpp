@@ -5,6 +5,9 @@ DecisionTestAlpha::DecisionTestAlpha(const rclcpp::NodeOptions& options)
     pose_sub_ = this->create_subscription<geometry_msgs::msg::PoseStamped>(
         "navigator/current_pose", 10, std::bind(&DecisionTestAlpha::pose_sub_callback, this, std::placeholders::_1));
 
+    hp_sub_ = this->create_subscription<pb_rm_interfaces::msg::GameRobotHP>(
+        "referee/all_robot_hp", 10, std::bind(&DecisionTestAlpha::hp_sub_callback, this, std::placeholders::_1));
+
     test_funcs_ = {
         {"NAV", std::bind(&DecisionTestAlpha::nav_to_point_test, this, std::placeholders::_1)},
         {"ROT", std::bind(&DecisionTestAlpha::rotate_to_angle_test, this, std::placeholders::_1)},

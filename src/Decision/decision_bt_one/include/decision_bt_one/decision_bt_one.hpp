@@ -1,3 +1,4 @@
+#include "ament_index_cpp/get_package_share_directory.hpp"
 #include "decision_bt/decision_bt.hpp"
 #include "pb_rm_interfaces/msg/game_robot_hp.hpp"
 
@@ -6,7 +7,9 @@ public:
     explicit DecisionBTOne(const rclcpp::NodeOptions& options);
 
 private:
-    void register_nodes(RMDecision::RMBT::BehaviorTreeFactory& factory) override;
+    void pose_sub_callback(const geometry_msgs::msg::PoseStamped::SharedPtr msg);
+
+    void hp_sub_callback(const pb_rm_interfaces::msg::GameRobotHP::SharedPtr msg);
 
     std::string bt_file_path() override;
 
