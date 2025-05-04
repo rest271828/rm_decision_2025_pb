@@ -105,9 +105,9 @@ void DecisionBeta::move_to_point(const PlaneCoordinate& targetPoint) const {
 }
 
 void DecisionBeta::nav_to_point_serially(const PlaneCoordinate& targetPoint) const {
-    const double TOLARANCE = 0.08;
+    const double TOLARANCE = 0.1;
     const double RATE = 100;
-    const double TIME_LIMIT = 20;
+    const double TIME_LIMIT = 10;
 
     rclcpp::Time start_time = this->now();
 
