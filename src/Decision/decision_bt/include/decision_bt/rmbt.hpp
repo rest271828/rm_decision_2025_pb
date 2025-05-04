@@ -15,11 +15,11 @@ class RMBTNode : public T {
         "RMBTNode class can only inherit from BT::TreeNode and its subclasses.");
 
 public:
-    RMBTNode(const std::string& name, std::shared_ptr<U> host, const BT::NodeConfig& config)
+    RMBTNode(const std::string& name, U* host, const BT::NodeConfig& config)
         : T(name, config), host_(host) {}
 
 protected:
-    std::shared_ptr<U> host_;
+    U* host_;
 };
 }  // namespace detail
 
@@ -46,9 +46,9 @@ public:
                       "or you should not provide the host.");
 
         constexpr bool default_constructable =
-            std::is_constructible<T, const std::string&, std::shared_ptr<U>>::value;
+            std::is_constructible<T, const std::string&, U*>::value;
         constexpr bool param_constructable =
-            std::is_constructible<T, const std::string&, std::shared_ptr<U>, const BT::NodeConfig&, ExtraArgs...>::value;
+            std::is_constructible<T, const std::string&, U*, const BT::NodeConfig&, ExtraArgs...>::value;
 
         // clang-format off
         static_assert(!std::is_abstract<T>::value,
@@ -57,18 +57,17 @@ public:
 
         static_assert(default_constructable || param_constructable,
         "[registerNode]: the registered RMBTNode must have at least two of these three constructors:\n"
-        "  (const std::string&, std::shared_ptr<T>, const NodeConfig&) or (const std::string&, std::shared_ptr<T>)\n"
+        "  (const std::string&, T*, const NodeConfig&) or (const std::string&, std::T*)\n"
         "Check also if the constructor is public!)");
         // clang-format on
 
-        std::shared_ptr<U> hostptr = std::shared_ptr<U>(host);
         registerBuilder(BT::CreateManifest<T>(ID, ports),
                         [=](
                             const std::string& name, const BT::NodeConfig& config) {
                             if constexpr (param_constructable) {
-                                return std::make_unique<T>(name, hostptr, config, args...);
+                                return std::make_unique<T>(name, host, config, args...);
                             } else if constexpr (default_constructable) {
-                                return std::make_unique<T>(name, hostptr, args...);
+                                return std::make_unique<T>(name, host, args...);
                             }
                         });
     }
@@ -85,7 +84,7 @@ public:
                           "method in the derived class?");
         } else {
             constexpr bool param_constructable =
-                std::is_constructible<T, const std::string&, std::shared_ptr<U>, const BT::NodeConfig&,
+                std::is_constructible<T, const std::string&, U*, const BT::NodeConfig&,
                                       ExtraArgs...>::value;
             constexpr bool has_static_ports_list = BT::has_static_method_providedPorts<T>::value;
 
@@ -97,7 +96,7 @@ public:
             static_assert(!(has_static_ports_list && !param_constructable),
                             "[registerNode]: since you have a static method providedPorts() in a RMBTNode,\n"
                             "you MUST add a constructor with signature:\n"
-                            "(const std::string&, std::shared_ptr<T>, const NodeConfig&)\n");
+                            "(const std::string&, T*, const NodeConfig&)\n");
             }
         // clang-format on
 

@@ -14,13 +14,14 @@ DecisionBT::~DecisionBT() {
 void DecisionBT::bt_exec() {
     test_display("[ ####### TREE TICKING ####### ]\n");
     auto status = tree_.tickOnce();
-    test_display("[ ###### STATUS:%s ###### ]\n", toStr(status));
+    DecisionBeta::test_display("[ ###### STATUS:%s ###### ]\n\n", toStr(status).c_str());
 
-    while (status == BT::NodeStatus::RUNNING) {
+    while (rclcpp::ok() && status == BT::NodeStatus::RUNNING) {
+        std::cout << 3 << std::endl;
         tree_.sleep(std::chrono::milliseconds(100));
         test_display("[ ####### TREE TICKING ####### ]\n");
         status = tree_.tickOnce();
-        test_display("[ ###### STATUS:%s ###### ]\n\n", toStr(status));
+        test_display("[ ###### STATUS:%s ###### ]\n\n", BT::toStr(status).c_str());
     }
 }
 

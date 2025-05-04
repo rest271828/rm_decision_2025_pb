@@ -23,7 +23,7 @@ class DecisionBT;
 class NavToPoint : public RMBT::SyncActionNode<DecisionBT> {
 public:
     NavToPoint(const std::string& name,
-               std::shared_ptr<DecisionBT> decisionNodeBT,
+               DecisionBT* decisionNodeBT,
                const BT::NodeConfig& config)
         : RMBT::SyncActionNode<DecisionBT>(name, decisionNodeBT, config) {}
 
@@ -45,7 +45,7 @@ public:
 class NavToPointSerially : public RMBT::SyncActionNode<DecisionBT> {
 public:
     NavToPointSerially(const std::string& name,
-                       std::shared_ptr<DecisionBT> decisionNodeBT,
+                       DecisionBT* decisionNodeBT,
                        const BT::NodeConfig& config)
         : RMBT::SyncActionNode<DecisionBT>(name, decisionNodeBT, config) {}
 
@@ -67,7 +67,7 @@ public:
 class MoveToPoint : public RMBT::SyncActionNode<DecisionBT> {
 public:
     MoveToPoint(const std::string& name,
-                std::shared_ptr<DecisionBT> decisionNodeBT,
+                DecisionBT* decisionNodeBT,
                 const BT::NodeConfig& config)
         : RMBT::SyncActionNode<DecisionBT>(name, decisionNodeBT, config) {}
 
@@ -89,7 +89,7 @@ public:
 class RotateToAngle : public RMBT::SyncActionNode<DecisionBT> {
 public:
     RotateToAngle(const std::string& name,
-                  std::shared_ptr<DecisionBT> decisionNodeBT,
+                  DecisionBT* decisionNodeBT,
                   const BT::NodeConfig& config)
         : RMBT::SyncActionNode<DecisionBT>(name, decisionNodeBT, config) {}
 
@@ -111,7 +111,7 @@ public:
 class RotateToVec : public RMBT::SyncActionNode<DecisionBT> {
 public:
     RotateToVec(const std::string& name,
-                std::shared_ptr<DecisionBT> decisionNodeBT,
+                DecisionBT* decisionNodeBT,
                 const BT::NodeConfig& config)
         : RMBT::SyncActionNode<DecisionBT>(name, decisionNodeBT, config) {}
 
@@ -133,7 +133,7 @@ public:
 class PointAchieved : public RMBT::ConditionNode<DecisionBT> {
 public:
     PointAchieved(const std::string& name,
-                  std::shared_ptr<DecisionBT> decisionNodeBT,
+                  DecisionBT* decisionNodeBT,
                   const BT::NodeConfig& config)
         : RMBT::ConditionNode<DecisionBT>(name, decisionNodeBT, config) {}
 
@@ -159,7 +159,7 @@ public:
 class AngleAchieved : public RMBT::ConditionNode<DecisionBT> {
 public:
     AngleAchieved(const std::string& name,
-                  std::shared_ptr<DecisionBT> decisionNodeBT,
+                  DecisionBT* decisionNodeBT,
                   const BT::NodeConfig& config)
         : RMBT::ConditionNode<DecisionBT>(name, decisionNodeBT, config) {}
 
