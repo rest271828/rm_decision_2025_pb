@@ -2,9 +2,9 @@
 
 #include <cassert>
 #include <cmath>
+#include <random>
 #include <string>
 #include <vector>
-#include <random>
 
 #include "geometry_msgs/msg/pose.hpp"
 #include "iw_interfaces/msg/architecture.hpp"
@@ -89,6 +89,18 @@ public:
 
     inline double distance_to(const PlaneCoordinate& distination) const {
         return (*this - distination).norm();
+    }
+
+    double angle() const {
+        return atan2(y, x);
+    }
+
+    PlaneCoordinate rotate(double theta) const {
+        return PlaneCoordinate(x * cos(theta) - y * sin(theta), x * sin(theta) + y * cos(theta));
+    }
+
+    PlaneCoordinate transform(const PlaneCoordinate& linear, double angular) const {
+        return (*this - linear).rotate(-angular);
     }
 
     PoseStamped to_pose_stamped(const rclcpp::Time& time) const {
@@ -372,8 +384,7 @@ const std::unordered_map<std::string, std::vector<double>> terrains = {
     {"Guard_points", {}},
 };
 
-const std::unordered_map<std::string, std::vector<double>> architecture = {
-};
+const std::unordered_map<std::string, std::vector<double>> architecture = {};
 
 }  // namespace DefaultInfo
 

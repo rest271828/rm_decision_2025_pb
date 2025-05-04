@@ -3,14 +3,7 @@
 using namespace RMDecision;
 
 DecisionBT::DecisionBT(uint selfId, std::string nodeName, const rclcpp::NodeOptions& options)
-    : DecisionBeta(selfId, nodeName, options) {
-    RMBT::BehaviorTreeFactory factory;
-    this->register_basic_nodes(factory);
-    this->register_nodes(factory);
-    tree_ = factory.createTreeFromFile(bt_file_path());
-
-    bt_exec_thread_ = std::thread(&DecisionBT::bt_exec, this);
-}
+    : DecisionBeta(selfId, nodeName, options) {}
 
 DecisionBT::~DecisionBT() {
     if (bt_exec_thread_.joinable()) {
@@ -46,7 +39,15 @@ void DecisionBT::register_nodes(RMBT::BehaviorTreeFactory& factory) {
 }
 
 std::string DecisionBT::bt_file_path() {
-    return ".";
+    return "?";
+}
+
+void DecisionBT::awaken() {
+    RMBT::BehaviorTreeFactory factory;
+    this->register_basic_nodes(factory);
+    this->register_nodes(factory);
+    tree_ = factory.createTreeFromFile(bt_file_path());
+    bt_exec_thread_ = std::thread(&DecisionBT::bt_exec, this);
 }
 
 void DecisionBT::nav_to_point(const PlaneCoordinate& targetPoint) const {

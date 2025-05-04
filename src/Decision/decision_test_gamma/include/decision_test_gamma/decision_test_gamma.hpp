@@ -11,5 +11,5 @@ private:
 
     void route_a() const;
 
-    void test_response(const std::string& instruction, const std::vector<float>& args) const override;
+    void test_response(const std::string& instruction, const std::vector<float>& args) override;
 };

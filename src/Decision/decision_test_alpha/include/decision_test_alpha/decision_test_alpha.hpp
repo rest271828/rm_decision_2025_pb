@@ -19,7 +19,7 @@ private:
 
     void route_a() const;
 
-    void test_response(const std::string& instruction, const std::vector<float>& args) const override;
+    void test_response(const std::string& instruction, const std::vector<float>& args) override;
 
     rclcpp::Subscription<geometry_msgs::msg::PoseStamped>::SharedPtr pose_sub_;
     rclcpp::Subscription<pb_rm_interfaces::msg::GameRobotHP>::SharedPtr hp_sub_;
