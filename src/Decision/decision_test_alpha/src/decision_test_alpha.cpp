@@ -147,7 +147,7 @@ void DecisionTestAlpha::test_response(const std::string& instruction, const std:
 
     case PTH:
         if (args.size() == 5) {
-            test_display("Passing through the hill: (%.3f, %.3f) -> (%.3f, %.3f)", args[0], args[1], args[2], args[3]);
+            test_display("Passing through the hill: (%.3f, %.3f) -> (%.3f, %.3f)\n", args[0], args[1], args[2], args[3]);
             pass_through_hill(
                 RMDecision::PlaneCoordinate(args[0], args[1]),
                 RMDecision::PlaneCoordinate(args[2], args[3]), args[4]);
@@ -156,27 +156,27 @@ void DecisionTestAlpha::test_response(const std::string& instruction, const std:
 
     case SLO:
         if (args.size() == 2) {
-            test_display("Set linear offset: (%.3f, %.3f)", args[0], args[1]);
+            test_display("Set linear offset: (%.3f, %.3f)\n", args[0], args[1]);
             set_linear_offset(RMDecision::PlaneCoordinate(args[0], args[1]));
             break;
         }
 
     case SAO:
         if (args.size() == 1) {
-            test_display("Set angular offset: %.3f", args[0]);
+            test_display("Set angular offset: %.3f\n", args[0]);
             set_angular_offset(args[0]);
             break;
         }
 
     case GLO: {
         RMDecision::PlaneCoordinate offset = get_linear_offset();
-        test_display("Linear offset: (%.3f, %.3f)", offset.x, offset.y);
+        test_display("Linear offset: (%.3f, %.3f)\n", offset.x, offset.y);
         break;
     }
 
     case GAO: {
         double offset = get_angular_offset();
-        test_display("Angular offset: %.3f", offset);
+        test_display("Angular offset: %.3f\n", offset);
         break;
     }
 
@@ -184,14 +184,16 @@ void DecisionTestAlpha::test_response(const std::string& instruction, const std:
         if (args.size() == 0) {
             mark_origin_linear();
             RMDecision::PlaneCoordinate offset = get_linear_offset();
-            test_display("Marked linear offset: (%.3f, %.3f)", offset.x, offset.y);
+            test_display("Marked linear offset: (%.3f, %.3f)\n", offset.x, offset.y);
+            break;
         }
 
     case OMA:
         if (args.size() == 0) {
             mark_origin_angular();
             double offset = get_angular_offset();
-            test_display("Marked angular offset: %.3f", offset);
+            test_display("Marked angular offset: %.3f\n", offset);
+            break;
         }
 
     default:
