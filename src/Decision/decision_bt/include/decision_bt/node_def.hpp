@@ -28,8 +28,11 @@ protected:
 
     virtual std::string bt_file_path();
 
+    void awaken();
+
 private:
-    void bt_exec();
+    void
+    bt_exec();
 
     void register_basic_nodes(RMBT::BehaviorTreeFactory& factory);
 
