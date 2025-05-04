@@ -16,7 +16,7 @@ private:
 class World : public RMDecision::RMBT::SyncActionNode<DecisionBTZero> {
 public:
     World(const std::string& name,
-          std::shared_ptr<DecisionBTZero> host)
+          DecisionBTZero* host)
         : RMDecision::RMBT::SyncActionNode<DecisionBTZero>(name, host, {}) {}
 
     BT::NodeStatus tick() override {
