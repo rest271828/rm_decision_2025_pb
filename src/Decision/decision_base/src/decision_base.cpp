@@ -104,6 +104,7 @@ double DecisionBase::get_angular_offset() const {
 }
 
 void DecisionBase::mark_origin_linear() {
+    set_linear_offset(PlaneCoordinate(0, 0));
     set_linear_offset(-get_current_coordinate());
 }
 
