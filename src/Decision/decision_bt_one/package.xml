@@ -9,6 +9,12 @@
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
+  <depend>decision_bt</depend>
+  <depend>geometry_msgs</depend>
+  <depend>pb_rm_interfaces</depend>
+  <depend>rm_decision_macros</depend>
+  <depend>ament_index_cpp</depend>
+
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
 
