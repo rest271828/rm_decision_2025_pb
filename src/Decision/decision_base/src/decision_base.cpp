@@ -104,6 +104,7 @@ double DecisionBase::get_angular_offset() const {
 }
 
 void DecisionBase::mark_origin_linear() {
+    set_linear_offset(PlaneCoordinate(0, 0));
     set_linear_offset(-get_current_coordinate());
 }
 
@@ -130,13 +131,13 @@ void DecisionBase::test_display(const char* format, ...) const {
     std::vsnprintf(buffer, sizeof(buffer), format, args);
     va_end(args);
 
+    auto message = std_msgs::msg::String();
+    message.data = std::string(buffer);
+    test_feedback_pub_->publish(message);
+
     size_t len = strlen(buffer);
     if (len > 0 && buffer[len - 1] == '\n') {
         buffer[len - 1] = '\0';
     }
     RCLCPP_INFO(this->get_logger(), "%s", buffer);
-
-    auto message = std_msgs::msg::String();
-    message.data = std::string(buffer);
-    test_feedback_pub_->publish(message);
 }

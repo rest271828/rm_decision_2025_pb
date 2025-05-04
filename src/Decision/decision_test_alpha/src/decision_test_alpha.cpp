@@ -4,6 +4,22 @@ DecisionTestAlpha::DecisionTestAlpha(const rclcpp::NodeOptions& options)
     : RMDecision::DecisionBeta(7, "decision_test_alpha", options) {
     pose_sub_ = this->create_subscription<geometry_msgs::msg::PoseStamped>(
         "navigator/current_pose", 10, std::bind(&DecisionTestAlpha::pose_sub_callback, this, std::placeholders::_1));
+
+    test_funcs_ = {
+        {"NAV", std::bind(&DecisionTestAlpha::nav_to_point_test, this, std::placeholders::_1)},
+        {"ROT", std::bind(&DecisionTestAlpha::rotate_to_angle_test, this, std::placeholders::_1)},
+        {"SAV", std::bind(&DecisionTestAlpha::set_angular_velocity_test, this, std::placeholders::_1)},
+        {"SLV", std::bind(&DecisionTestAlpha::set_linear_velocity_test, this, std::placeholders::_1)},
+        {"MOV", std::bind(&DecisionTestAlpha::move_to_point_test, this, std::placeholders::_1)},
+        {"GCP", std::bind(&DecisionTestAlpha::get_current_point_test, this, std::placeholders::_1)},
+        {"GCA", std::bind(&DecisionTestAlpha::get_current_angle_test, this, std::placeholders::_1)},
+        {"SLO", std::bind(&DecisionTestAlpha::set_linear_offset_test, this, std::placeholders::_1)},
+        {"SAO", std::bind(&DecisionTestAlpha::set_angular_offset_test, this, std::placeholders::_1)},
+        {"GLO", std::bind(&DecisionTestAlpha::get_linear_offset_test, this, std::placeholders::_1)},
+        {"GAO", std::bind(&DecisionTestAlpha::get_angular_offset_test, this, std::placeholders::_1)},
+        {"MLO", std::bind(&DecisionTestAlpha::mark_origin_linear_test, this, std::placeholders::_1)},
+        {"MAO", std::bind(&DecisionTestAlpha::mark_origin_angular_test, this, std::placeholders::_1)},
+    };
 }
 
 void DecisionTestAlpha::pose_sub_callback(const geometry_msgs::msg::PoseStamped::SharedPtr msg) {
@@ -53,150 +69,96 @@ void DecisionTestAlpha::route_a() const {
 }
 
 void DecisionTestAlpha::test_response(const std::string& instruction, const std::vector<float>& args) {
-    enum Inst { NAV,  // nav_to_point
-                ROT,  // rotate_to_angle
-                SAV,  // set_angular_vel
-                SLV,  // set_linear_vel
-                MOV,  // move_to_point
-                GCP,  // get_current_point
-                GCA,  // get_current_angle
-                RA,   // route_a
-                PTH,  // pass_through_hill
-                SLO,  // set_linear_offset
-                SAO,  // set_angular_offset
-                GLO,  // get_linear_offset
-                GAO,  // get_angular_offset
-                OML,  // mark_origin_linear
-                OMA   // marl_origin_angular
-    };
-
-    const std::unordered_map<std::string, Inst> convert = {
-        {"NAV", NAV},
-        {"ROT", ROT},
-        {"SAV", SAV},
-        {"SLV", SLV},
-        {"MOV", MOV},
-        {"GCP", GCP},
-        {"GCA", GCA},
-        {"RA", RA},
-        {"PTH", PTH},
-        {"SLO", SLO},
-        {"SAO", SAO},
-        {"GLO", GLO},
-        {"GAO", GAO},
-        {"OML", OML},
-        {"OMA", OMA}};
-
-    auto it = convert.find(instruction);
-    if (it == convert.end()) {
+    auto it = test_funcs_.find(instruction);
+    if (it == test_funcs_.end()) {
         test_display("Instruction undefined.\n");
         return;
     }
 
-    switch (it->second) {
-    case NAV:
-        if (args.size() == 2) {
-            test_display("Navigating to point: (%.3f, %.3f)\n", args[0], args[1]);
-            nav_to_point(args[0], args[1]);
-        }
-        break;
+    test_funcs_[instruction](args);
+}
 
-    case ROT:
-        if (args.size() == 1) {
-            test_display("Rotating to angle: %.3f\n", args[0]);
-            rotate_to_angle(args[0]);
-        }
-        break;
-
-    case SAV:
-        if (args.size() == 1) {
-            test_display("Set angular velocity: %.3f\n", args[0]);
-            set_angular_velocity(args[0]);
-        }
-        break;
-
-    case SLV:
-        if (args.size() == 2) {
-            test_display("Set linear velocity: (%.3f, %.3f)\n", args[0], args[1]);
-            set_linear_velocity(RMDecision::PlaneCoordinate(args[0], args[1]));
-        }
-        break;
-
-    case MOV:
-        if (args.size() == 2) {
-            test_display("Moving to point: (%.3f, %.3f)\n", args[0], args[1]);
-            move_to_point(RMDecision::PlaneCoordinate(args[0], args[1]));
-        }
-        break;
-
-    case GCP: {
-        auto currentPoint = get_current_coordinate();
-        test_display("Current point: (%.3f, %.3f)\n", currentPoint.x, currentPoint.y);
-        break;
+void DecisionTestAlpha::nav_to_point_test(const std::vector<float>& args) {
+    if (args.size() == 2) {
+        test_display("Navigating to point: (%.3f, %.3f)\n", args[0], args[1]);
+        nav_to_point(args[0], args[1]);
     }
+}
 
-    case GCA: {
-        test_display("Current angle: %.3f\n", get_current_angle());
-        break;
+void DecisionTestAlpha::rotate_to_angle_test(const std::vector<float>& args) {
+    if (args.size() == 1) {
+        test_display("Rotating to angle: %.3f\n", args[0]);
+        rotate_to_angle(args[0]);
     }
+}
 
-    case RA: {
-        route_a();
-        break;
+void DecisionTestAlpha::set_angular_velocity_test(const std::vector<float>& args) {
+    if (args.size() == 1) {
+        test_display("Set angular velocity: %.3f\n", args[0]);
+        set_angular_velocity(args[0]);
     }
+}
 
-    case PTH:
-        if (args.size() == 5) {
-            test_display("Passing through the hill: (%.3f, %.3f) -> (%.3f, %.3f)", args[0], args[1], args[2], args[3]);
-            pass_through_hill(
-                RMDecision::PlaneCoordinate(args[0], args[1]),
-                RMDecision::PlaneCoordinate(args[2], args[3]), args[4]);
-            break;
-        }
+void DecisionTestAlpha::set_linear_velocity_test(const std::vector<float>& args) {
+    if (args.size() == 2) {
+        test_display("Set linear velocity: (%.3f, %.3f)\n", args[0], args[1]);
+        set_linear_velocity(RMDecision::PlaneCoordinate(args[0], args[1]));
+    }
+}
 
-    case SLO:
-        if (args.size() == 2) {
-            test_display("Set linear offset: (%.3f, %.3f)", args[0], args[1]);
-            set_linear_offset(RMDecision::PlaneCoordinate(args[0], args[1]));
-            break;
-        }
+void DecisionTestAlpha::move_to_point_test(const std::vector<float>& args) {
+    if (args.size() == 2) {
+        test_display("Moving to point: (%.3f, %.3f)\n", args[0], args[1]);
+        move_to_point(RMDecision::PlaneCoordinate(args[0], args[1]));
+    }
+}
 
-    case SAO:
-        if (args.size() == 1) {
-            test_display("Set angular offset: %.3f", args[0]);
-            set_angular_offset(args[0]);
-            break;
-        }
+void DecisionTestAlpha::get_current_point_test(const std::vector<float>& args) {
+    auto currentPoint = get_current_coordinate();
+    test_display("Current point: (%.3f, %.3f)\n", currentPoint.x, currentPoint.y);
+}
 
-    case GLO: {
+void DecisionTestAlpha::get_current_angle_test(const std::vector<float>& args) {
+    test_display("Current angle: %.3f\n", get_current_angle());
+}
+
+void DecisionTestAlpha::set_linear_offset_test(const std::vector<float>& args) {
+    if (args.size() == 2) {
+        test_display("Set linear offset: (%.3f, %.3f)\n", args[0], args[1]);
+        set_linear_offset(RMDecision::PlaneCoordinate(args[0], args[1]));
+    }
+}
+
+void DecisionTestAlpha::set_angular_offset_test(const std::vector<float>& args) {
+    if (args.size() == 1) {
+        test_display("Set angular offset: %.3f\n", args[0]);
+        set_angular_offset(args[0]);
+    }
+}
+
+void DecisionTestAlpha::get_linear_offset_test(const std::vector<float>& args) {
+    RMDecision::PlaneCoordinate offset = get_linear_offset();
+    test_display("Linear offset: (%.3f, %.3f)\n", offset.x, offset.y);
+}
+
+void DecisionTestAlpha::get_angular_offset_test(const std::vector<float>& args) {
+    double offset = get_angular_offset();
+    test_display("Angular offset: %.3f\n", offset);
+}
+
+void DecisionTestAlpha::mark_origin_linear_test(const std::vector<float>& args) {
+    if (args.size() == 0) {
+        mark_origin_linear();
         RMDecision::PlaneCoordinate offset = get_linear_offset();
-        test_display("Linear offset: (%.3f, %.3f)", offset.x, offset.y);
-        break;
+        test_display("Marked linear offset: (%.3f, %.3f)\n", offset.x, offset.y);
     }
+}
 
-    case GAO: {
+void DecisionTestAlpha::mark_origin_angular_test(const std::vector<float>& args) {
+    if (args.size() == 0) {
+        mark_origin_angular();
         double offset = get_angular_offset();
-        test_display("Angular offset: %.3f", offset);
-        break;
-    }
-
-    case OML:
-        if (args.size() == 0) {
-            mark_origin_linear();
-            RMDecision::PlaneCoordinate offset = get_linear_offset();
-            test_display("Marked linear offset: (%.3f, %.3f)", offset.x, offset.y);
-        }
-
-    case OMA:
-        if (args.size() == 0) {
-            mark_origin_angular();
-            double offset = get_angular_offset();
-            test_display("Marked angular offset: %.3f", offset);
-        }
-
-    default:
-        test_display("Instruction undefined.\n");
-        break;
+        test_display("Marked angular offset: %.3f\n", offset);
     }
 }
 
