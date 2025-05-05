@@ -1,18 +1,19 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>decision_test_alpha</name>
+  <name>decision_bt_one</name>
   <version>0.0.0</version>
   <description>TODO: Package description</description>
-  <maintainer email="2893734607@qq.com">ethereal</maintainer>
+  <maintainer email="20233473@stu.edu.cn">mechax</maintainer>
   <license>TODO: License declaration</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
-  <depend>rclcpp</depend>
-  <depend>decision_beta</depend>
+  <depend>decision_bt</depend>
+  <depend>geometry_msgs</depend>
   <depend>pb_rm_interfaces</depend>
   <depend>rm_decision_macros</depend>
+  <depend>ament_index_cpp</depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
